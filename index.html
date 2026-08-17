@@ -3,324 +3,535 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMS — Accounting Made Simple</title>
-<meta name="description" content="Invoicing, bank sync, financial reports, tax prep, and more — one system for the entire financial side of a small business.">
+<title>AMS — Accounting Made Simple Info</title>
+<meta name="description" content="One connected system for invoicing, bank sync, financial reports, and tax prep. Built for small businesses who'd rather be running their business.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<script>
+  (function () {
+    var saved = localStorage.getItem('ams-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <style>
   :root {
-    --bg-page: #EFF1E9;
-    --bg-card: #FBFAF4;
-    --ink: #16211C;
-    --ink-soft: #4A574C;
-    --ink-faint: #7C8A7A;
-    --rule: #C7D0C0;
-    --rule-strong: #A9B6A3;
-    --ledger-green: #1E5A42;
-    --ledger-green-deep: #123D2C;
-    --ledger-green-tint: #E3EDE5;
-    --debit-red: #A13B29;
-    --debit-red-tint: #F4E4DF;
-    --brass: #AD8A3D;
-    --brass-tint: #F1E9D3;
+    --bg: #FBFCFA;
+    --bg-raised: #F2F4EE;
+    --bg-raised-2: #E9ECE3;
+    --line: #DEE3D6;
+    --line-soft: #ECEFE7;
+    --ink: #12160F;
+    --ink-soft: #57624F;
+    --ink-faint: #8B9581;
+    --accent: #1B8A4C;
+    --accent-strong: #14703B;
+    --accent-soft: rgba(27, 138, 76, 0.08);
+    --accent-line: rgba(27, 138, 76, 0.32);
+    --on-accent: #FBFCFA;
+    --shadow: rgba(18, 22, 15, 0.10);
 
-    --font-display: 'Fraunces', serif;
-    --font-body: 'Public Sans', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
+    --font-display: 'Fredoka', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 
-    --max-width: 1120px;
+    --max-width: 1180px;
+    --radius: 10px;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0A0D0A;
+    --bg-raised: #12160F;
+    --bg-raised-2: #1B2117;
+    --line: #29321F;
+    --line-soft: #1A2015;
+    --ink: #F2F5EE;
+    --ink-soft: #A9B39F;
+    --ink-faint: #6B7563;
+    --accent: #3FD986;
+    --accent-strong: #6EE8A6;
+    --accent-soft: rgba(63, 217, 134, 0.12);
+    --accent-line: rgba(63, 217, 134, 0.38);
+    --on-accent: #0A0D0A;
+    --shadow: rgba(0, 0, 0, 0.45);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg-page);
+    background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    transition: background 0.35s ease, color 0.35s ease;
   }
   img, svg { display: block; max-width: 100%; }
   a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--ledger-green); outline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   .wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 28px; }
-
-  .ledger-bg {
-    background-image: repeating-linear-gradient(to bottom, transparent, transparent 43px, var(--rule) 44px);
-    background-attachment: local;
-  }
 
   /* -------------------- Nav -------------------- */
   header.nav {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(239, 241, 233, 0.88);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-soft);
+    transition: background 0.35s ease, border-color 0.35s ease;
   }
   .nav-inner {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 28px; max-width: var(--max-width); margin: 0 auto;
+    padding: 16px 28px; max-width: var(--max-width); margin: 0 auto;
+    height: 68px; gap: 16px;
   }
-  .brand { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 22px; letter-spacing: -0.01em; }
-  .brand-mark { width: 30px; height: 30px; border: 1.5px solid var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 600; flex-shrink: 0; }
-  .brand-tag { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; display: none; }
-  nav.links { display: none; gap: 32px; font-size: 14px; font-weight: 500; }
-  nav.links a { text-decoration: none; color: var(--ink-soft); }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 0; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0;
+    background: var(--accent); color: var(--on-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+    transition: background 0.35s ease;
+  }
+  nav.links { display: none; gap: 30px; font-size: 14.5px; font-weight: 500; margin-left: auto; margin-right: 8px; }
+  nav.links a { position: relative; text-decoration: none; color: var(--ink-soft); transition: color 0.15s ease; padding-bottom: 3px; }
+  nav.links a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px;
+    background: var(--accent); transition: right 0.25s cubic-bezier(0.16,1,0.3,1);
+  }
   nav.links a:hover { color: var(--ink); }
+  nav.links a:hover::after { right: 0; }
+
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+
+  .theme-toggle {
+    width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--bg-raised); color: var(--ink); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+    position: relative; overflow: hidden;
+  }
+  .theme-toggle:hover { border-color: var(--ink-soft); }
+  .theme-toggle:active { transform: scale(0.92); }
+  .theme-toggle i { position: absolute; font-size: 17px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease; }
+  .theme-toggle .ph-sun-dim { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+  .theme-toggle .ph-moon { opacity: 1; transform: rotate(0) scale(1); }
+  :root[data-theme="dark"] .theme-toggle .ph-sun-dim { opacity: 1; transform: rotate(0) scale(1); }
+  :root[data-theme="dark"] .theme-toggle .ph-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
 
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-body); font-weight: 600; font-size: 14px;
-    padding: 11px 20px; border-radius: 3px; border: 1.5px solid var(--ink);
-    cursor: pointer; text-decoration: none;
-    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
-    white-space: nowrap;
+    font-family: var(--font-body); font-weight: 700; font-size: 14px;
+    padding: 11px 22px; border-radius: 999px; border: 1px solid transparent;
+    cursor: pointer; text-decoration: none; white-space: nowrap;
+    transition: transform 0.2s cubic-bezier(0.16,1,0.3,1), background 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
+    position: relative;
   }
-  .btn-primary { background: var(--ink); color: var(--bg-page); }
-  .btn-primary:hover { background: var(--ledger-green-deep); border-color: var(--ledger-green-deep); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule-strong); }
-  .btn-ghost:hover { border-color: var(--ink); }
-  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-strong); box-shadow: 0 8px 24px -8px var(--accent-line); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink-soft); }
+  .btn:active { transform: scale(0.97) !important; }
 
   /* -------------------- Hero -------------------- */
-  .hero { padding: 88px 0 64px; }
-  .hero-inner { display: grid; grid-template-columns: 1fr; gap: 56px; align-items: center; }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--ledger-green); background: var(--ledger-green-tint); border: 1px solid var(--rule);
-    padding: 6px 12px; border-radius: 3px; margin-bottom: 22px;
-  }
-  .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--ledger-green); }
+  .hero { padding: 64px 0 88px; overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
   h1 {
-    font-family: var(--font-display); font-weight: 500; font-size: clamp(32px, 5vw, 54px);
-    line-height: 1.08; letter-spacing: -0.015em; max-width: 17ch;
+    font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5.4vw, 58px);
+    line-height: 1.08; letter-spacing: -0.005em; max-width: 15ch;
   }
-  h1 em { font-style: italic; color: var(--ledger-green); }
-  .hero-sub { margin-top: 22px; font-size: 18px; color: var(--ink-soft); max-width: 48ch; line-height: 1.6; }
-  .hero-ctas { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
-  .hero-note { margin-top: 20px; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); }
+  h1 .accent { color: var(--accent); }
+  .hero-sub { margin-top: 22px; font-size: 17.5px; color: var(--ink-soft); max-width: 44ch; line-height: 1.6; }
+  .hero-ctas { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
 
-  /* -------------------- Hero mockup: financial command center -------------------- */
-  .mockup-card {
-    background: var(--bg-card); border: 1px solid var(--rule-strong); border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(22,33,28,0.04), 0 18px 40px -20px rgba(22,33,28,0.25);
-    overflow: hidden;
+  /* -------------------- Hero graphic: growth mark -------------------- */
+  .hero-visual { position: relative; aspect-ratio: 1 / 1; max-width: 480px; margin: 0 auto; will-change: transform; }
+  .hero-visual svg { width: 100%; height: 100%; }
+  .hero-visual .ring { stroke: var(--line); transition: stroke 0.35s ease; }
+  .float-card {
+    position: absolute;
+    background: var(--bg-raised); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px 16px;
+    box-shadow: 0 20px 50px -20px var(--shadow);
+    opacity: 0; transform: translateY(10px);
+    animation: floatIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    transition: background 0.35s ease, border-color 0.35s ease;
   }
-  .mockup-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 18px; border-bottom: 1px solid var(--rule);
-    font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint);
-    text-transform: uppercase; letter-spacing: 0.05em;
-  }
-  .mockup-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .float-card .fc-lab { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+  .float-card .fc-num { font-family: var(--font-mono); font-size: 19px; font-weight: 600; margin-top: 4px; color: var(--ink); }
+  .float-card .fc-num.pos { color: var(--accent); }
+  .fc-1 { top: 8%; left: -4%; animation-delay: 0.2s; }
+  .fc-2 { bottom: 12%; right: -6%; animation-delay: 0.5s; }
+  @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
 
-  .cmd-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .cmd-stat { border: 1px solid var(--rule); border-radius: 5px; padding: 14px; background: var(--bg-page); opacity: 0; transform: translateY(6px); animation: rowIn 0.5s ease forwards; }
-  .cmd-stat:nth-child(1) { animation-delay: 0.05s; }
-  .cmd-stat:nth-child(2) { animation-delay: 0.15s; }
-  .cmd-stat:nth-child(3) { animation-delay: 0.25s; }
-  .cmd-stat:nth-child(4) { animation-delay: 0.35s; }
-  @keyframes rowIn { to { opacity: 1; transform: translateY(0); } }
-  .cmd-lab { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); }
-  .cmd-num { font-family: var(--font-mono); font-size: 20px; font-weight: 500; margin-top: 4px; }
-  .cmd-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
-  .num-pos { color: var(--ledger-green); }
-  .num-warn { color: var(--debit-red); }
-
-  .cmd-row {
-    display: flex; align-items: center; justify-content: space-between;
-    border: 1px solid var(--rule); border-radius: 5px; padding: 12px 14px; background: var(--bg-page);
-    opacity: 0; transform: translateY(6px); animation: rowIn 0.5s ease forwards; animation-delay: 0.45s;
+  @media (prefers-reduced-motion: no-preference) {
+    .growth-line { stroke-dasharray: 620; stroke-dashoffset: 620; animation: draw 1.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
   }
-  .cmd-row-left { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-  .avatars { display: flex; }
-  .avatar {
-    width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--bg-page);
-    background: var(--ledger-green); color: var(--bg-card); font-family: var(--font-mono);
-    font-size: 9px; display: flex; align-items: center; justify-content: center; margin-left: -6px;
-  }
-  .avatar:first-child { margin-left: 0; }
-
-  .stamp {
-    display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
-    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--brass); border: 1px solid var(--brass); padding: 5px 10px; border-radius: 3px;
-    opacity: 0; animation: stampIn 0.4s ease forwards; animation-delay: 0.65s; transform: rotate(-2deg) scale(1.4);
-  }
-  @keyframes stampIn { to { opacity: 1; transform: rotate(-2deg) scale(1); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
 
   /* -------------------- Section shell -------------------- */
-  section { padding: 76px 0; }
-  .section-head { max-width: 640px; margin-bottom: 48px; }
-  .kicker { font-family: var(--font-mono); font-size: 22Spx; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ledger-green); margin-bottom: 12px; }
-  h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(26px, 3.6vw, 38px); letter-spacing: -0.01em; line-height: 1.15; }
-  .section-sub { margin-top: 14px; font-size: 16.5px; color: var(--ink-soft); max-width: 56ch; }
+  section { padding: 84px 0; }
+  .section-head { max-width: 640px; margin-bottom: 44px; }
+  .kicker {
+    display: inline-block; font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--accent); margin-bottom: 14px;
+  }
+  h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.4vw, 36px); letter-spacing: -0.005em; line-height: 1.18; }
+  .section-sub { margin-top: 14px; font-size: 16px; color: var(--ink-soft); max-width: 54ch; }
 
-  /* -------------------- Problem section -------------------- */
-  .problem { background: var(--bg-card); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .problem-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-  .problem-card { padding: 24px; border: 1px solid var(--rule); border-radius: 5px; background: var(--bg-page); }
-  .problem-card .mark { font-family: var(--font-mono); font-size: 12px; color: var(--debit-red); margin-bottom: 10px; }
-  .problem-card p { font-size: 15px; color: var(--ink-soft); }
-  .problem-card strong { display: block; font-family: var(--font-display); font-size: 19px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  /* -------------------- Problem: asymmetric bento -------------------- */
+  .problem { border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); background: var(--bg-raised); transition: background 0.35s ease, border-color 0.35s ease; }
+  .problem-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .p-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease, border-color 0.2s ease; }
+  .p-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -18px var(--shadow); border-color: var(--ink-faint); }
+  .p-card.big { background: linear-gradient(155deg, var(--bg-raised-2), var(--bg)); }
+  .p-card .p-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 14px; }
+  .p-card p { font-size: 15px; color: var(--ink-soft); }
+  .p-card strong { display: block; font-family: var(--font-display); font-size: 21px; font-weight: 600; color: var(--ink); margin-bottom: 10px; letter-spacing: 0; }
 
-  /* -------------------- Capability ledger -------------------- */
-  .cap-legend { display: flex; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+  /* -------------------- Capability clusters -------------------- */
+  .cap-legend { display: flex; gap: 22px; margin-bottom: 36px; flex-wrap: wrap; }
   .cap-legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .dot-live { background: var(--ledger-green); }
-  .dot-soon { background: var(--brass); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .dot-live { background: var(--accent); box-shadow: 0 0 0 0 var(--accent-line); animation: pulseDot 2.2s ease-out infinite; }
+  .dot-soon { background: var(--ink-faint); }
+  @keyframes pulseDot {
+    0% { box-shadow: 0 0 0 0 var(--accent-line); }
+    70% { box-shadow: 0 0 0 6px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
 
-  .cap-list { border-top: 1px solid var(--rule); }
-  .cap-row {
-    display: grid; grid-template-columns: 34px 1fr; gap: 16px;
-    padding: 22px 0; border-bottom: 1px solid var(--rule);
+  .cluster { margin-bottom: 44px; }
+  .cluster:last-child { margin-bottom: 0; }
+  .cluster-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 18px; letter-spacing: 0; }
+  .cluster-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .cap-card {
+    --mx: 50%; --my: 0%;
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
+    background: var(--bg-raised); display: flex; flex-direction: column; gap: 10px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.2s ease, box-shadow 0.3s ease;
   }
-  .cap-idx { font-family: var(--font-mono); font-size: 13px; color: var(--rule-strong); padding-top: 3px; }
-  .cap-body { display: flex; flex-direction: column; gap: 4px; }
-  .cap-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .cap-title { font-family: var(--font-display); font-size: 19px; font-weight: 500; }
+  .cap-card::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(220px circle at var(--mx) var(--my), var(--accent-soft), transparent 70%);
+    transition: opacity 0.3s ease;
+  }
+  .cap-card:hover { transform: translateY(-3px); border-color: var(--accent-line); box-shadow: 0 16px 34px -20px var(--shadow); }
+  .cap-card:hover::before { opacity: 1; }
+  .cap-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--accent-soft); border: 1px solid var(--accent-line); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 17px; flex-shrink: 0; }
+  .cap-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+  .cap-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.55; flex-grow: 1; }
   .cap-status {
-    font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.04em;
-    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em;
+    margin-top: 2px; white-space: nowrap;
   }
-  .status-live { background: var(--ledger-green-tint); color: var(--ledger-green); border: 1px solid var(--ledger-green); }
-  .status-soon { background: var(--brass-tint); color: var(--brass); border: 1px solid var(--brass); }
-  .cap-desc { font-size: 14.5px; color: var(--ink-soft); max-width: 62ch; }
+  .cap-status .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .status-live { color: var(--accent); }
+  .status-live .dot { background: var(--accent); animation: pulseDot 2.2s ease-out infinite; }
+  .status-soon { color: var(--ink-faint); }
+  .status-soon .dot { background: var(--ink-faint); border: 1px dashed var(--ink-faint); background: transparent; width: 5px; height: 5px; }
 
   /* -------------------- How it works -------------------- */
-  .steps { list-style: none; display: grid; grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--rule); }
-  .step { display: grid; grid-template-columns: 60px 1fr; gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--rule); }
-  .step-num { font-family: var(--font-display); font-size: 30px; color: var(--rule-strong); font-weight: 500; }
-  .step h4 { font-family: var(--font-display); font-weight: 500; font-size: 19px; margin-bottom: 6px; }
-  .step p { color: var(--ink-soft); font-size: 15px; max-width: 56ch; }
+  .how { background: var(--bg-raised); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); transition: background 0.35s ease, border-color 0.35s ease; }
+  .step-row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .step {
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;
+    background: var(--bg); display: flex; flex-direction: column; gap: 14px;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+  }
+  .step:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -20px var(--shadow); }
+  .step-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+  .step h4 { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 0; }
+  .step p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; }
 
-  /* -------------------- Platforms -------------------- */
-  .platforms { background: var(--ledger-green-deep); color: #EAF0EA; }
-  .platforms .kicker { color: #9FCBB2; }
-  .platforms h2 { color: #FBFAF4; }
-  .platforms .section-sub { color: #C4D6C7; }
-  .plat-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 40px; }
-  .plat-card { border: 1px solid rgba(255,255,255,0.16); border-radius: 6px; padding: 26px; background: rgba(255,255,255,0.03); }
-  .plat-card .plat-label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #9FCBB2; margin-bottom: 12px; }
-  .plat-card h4 { font-family: var(--font-display); font-size: 21px; font-weight: 500; margin-bottom: 10px; color: #FBFAF4; }
-  .plat-card p { font-size: 14.5px; color: #C4D6C7; }
+  /* -------------------- Platforms bento -------------------- */
+  .plat-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
+  .plat-card {
+    border-radius: var(--radius); padding: 32px; min-height: 220px;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
+  }
+  .plat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px var(--shadow); }
+  .plat-card.mobile { background: linear-gradient(155deg, var(--bg-raised-2), var(--bg)); border: 1px solid var(--line); }
+  .plat-card.web { background: var(--accent); color: var(--on-accent); }
+  .plat-card .plat-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.65; }
+  .plat-card h4 { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 0; }
+  .plat-card.mobile h4 { color: var(--ink); }
+  .plat-card p { font-size: 14.5px; max-width: 40ch; }
+  .plat-card.mobile p { color: var(--ink-soft); }
+  .plat-card.web p { color: color-mix(in srgb, var(--on-accent) 78%, transparent); }
+  .plat-icon { position: absolute; top: 28px; right: 28px; font-size: 30px; opacity: 0.5; }
+  .plat-card.mobile .plat-icon { color: var(--ink-soft); }
+  .plat-card.web .plat-icon { color: var(--on-accent); }
+
+  /* -------------------- App showcase: dark stage + phone rail -------------------- */
+  .showcase {
+    padding: 96px 0 80px;
+    background:
+      radial-gradient(ellipse 60% 55% at 22% 15%, rgba(63, 217, 134, 0.18), transparent 62%),
+      radial-gradient(ellipse 50% 45% at 85% 75%, rgba(63, 217, 134, 0.08), transparent 60%),
+      linear-gradient(180deg, #0A0D0A, #060706);
+    color: #EDF2EA;
+  }
+  .showcase .kicker { color: #7EEAB0; }
+  .showcase h2 { color: #F5F8F3; }
+  .showcase .section-sub { color: #A6B0A1; }
+  .phone-rail-outer { position: relative; }
+  .phone-rail-outer::before, .phone-rail-outer::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: 64px; z-index: 2; pointer-events: none;
+  }
+  .phone-rail-outer::before { left: 0; background: linear-gradient(to right, #060706, transparent); }
+  .phone-rail-outer::after { right: 0; background: linear-gradient(to left, #060706, transparent); }
+  .phone-rail {
+    display: flex; gap: 44px; overflow-x: auto; scroll-snap-type: x proximity;
+    padding: 46px 28px 22px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .phone-rail::-webkit-scrollbar { display: none; }
+  .phone-card {
+    scroll-snap-align: start; flex-shrink: 0; position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .phone-card:hover { transform: translateY(-8px); }
+  .phone-frame {
+    width: 220px; aspect-ratio: 9 / 19.5; border-radius: 44px; flex-shrink: 0;
+    background: linear-gradient(155deg, #77797c, #2b2c2f 45%, #0e0f10);
+    padding: 8px; box-shadow: 0 30px 60px -22px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .phone-frame::before {
+    content: ''; position: absolute; right: -3px; top: 108px; width: 3px; height: 64px;
+    background: #0e0f10; border-radius: 2px 0 0 2px;
+  }
+  .phone-frame::after {
+    content: ''; position: absolute; left: -3px; top: 88px; width: 3px; height: 42px;
+    background: #0e0f10; border-radius: 0 2px 2px 0;
+    box-shadow: 0 60px 0 0 #0e0f10;
+  }
+  .phone-screen {
+    width: 100%; height: 100%; border-radius: 37px; overflow: hidden;
+    background: #0B0B0D; position: relative;
+  }
+  .phone-screen img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+  .phone-notch {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 22px; border-radius: 999px; background: #0B0B0D; z-index: 3;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+
+  /* -------------------- App mock screens (recreated UI) -------------------- */
+  .am {
+    width: 100%; height: 100%; background: #F7F3EA; color: #17140F;
+    font-family: var(--font-body); display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .am-status {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 16px 2px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; flex-shrink: 0;
+  }
+  .am-status .am-icons { display: flex; align-items: center; gap: 3px; font-size: 10px; }
+  .am-header {
+    padding: 8px 16px 6px; font-family: var(--font-display); font-weight: 700; font-size: 15px; flex-shrink: 0;
+  }
+  .am-header.center { text-align: center; position: relative; }
+  .am-header.center .am-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #17140F; }
+  .am-body { flex: 1; overflow: hidden; padding-bottom: 8px; }
+  .am-tabs { display: flex; gap: 5px; padding: 0 16px 8px; }
+  .am-tab {
+    font-family: var(--font-mono); font-size: 7.8px; font-weight: 600; padding: 5px 9px; border-radius: 999px;
+    border: 1px solid #E3DCC8; color: #6B6455; white-space: nowrap;
+  }
+  .am-tab.active { background: #17140F; color: #F7F3EA; border-color: #17140F; }
+  .am-card { background: #EFEAE0; border-radius: 10px; margin: 0 16px 10px; padding: 12px 13px; }
+  .am-card-lab { font-size: 8px; color: #8A8373; margin-bottom: 6px; }
+  .am-card-big { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
+  .am-card-sub { font-size: 7.5px; color: #8A8373; margin-top: 2px; }
+  .am-card-link { font-size: 8px; color: #1D4ED8; font-weight: 600; margin-top: 6px; }
+  .am-stat-row { display: flex; gap: 8px; padding: 0 16px 10px; }
+  .am-stat { flex: 1; border-radius: 10px; padding: 10px 12px; }
+  .am-stat.pos { background: #DCEFE0; color: #14603A; }
+  .am-stat.neg { background: #F6DEDA; color: #8A2E22; }
+  .am-stat-lab { font-size: 7.5px; opacity: 0.75; }
+  .am-stat-num { font-family: var(--font-display); font-weight: 700; font-size: 15px; margin-top: 2px; }
+  .am-line { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid #E2DCC8; font-size: 9px; }
+  .am-line:last-of-type { border-bottom: none; }
+  .am-line.total { font-weight: 700; padding-top: 8px; }
+  .am-line .am-l-lab { color: #4A4638; }
+  .am-line .am-l-sub { font-size: 7px; color: #9A947F; display: block; }
+  .am-pos { color: #1B8A4C; font-weight: 700; }
+  .am-neg { color: #B23A2E; font-weight: 700; }
+  .am-note { font-size: 6.8px; color: #9A947F; padding: 4px 16px 10px; line-height: 1.5; }
+  .am-btn { margin: 2px 16px 10px; padding: 10px; border-radius: 9px; text-align: center; font-size: 9px; font-weight: 700; }
+  .am-btn.black { background: #17140F; color: #F7F3EA; }
+  .am-btn.outline { border: 1px solid #D8D0BC; color: #17140F; }
+  .am-row {
+    display: flex; align-items: center; gap: 10px; margin: 0 16px 8px; padding: 10px 11px;
+    background: #EFEAE0; border-radius: 10px;
+  }
+  .am-row-icon {
+    width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+  .am-row-body { flex: 1; min-width: 0; }
+  .am-row-title { font-size: 9px; font-weight: 700; }
+  .am-row-sub { font-size: 7.5px; color: #8A8373; margin-top: 1px; }
+  .am-row-amt { font-size: 10px; font-weight: 700; text-align: right; }
+  .am-badge { font-size: 6.5px; font-weight: 700; padding: 2px 6px; border-radius: 999px; margin-top: 2px; display: inline-block; }
+  .am-badge.paid { background: #DCEFE0; color: #14603A; }
+  .am-badge.overdue { color: #B23A2E; font-weight: 700; background: none; padding: 0; }
+  .am-badge.draft { background: #E9E4D8; color: #6B6455; }
+  .am-avatar {
+    width: 26px; height: 26px; border-radius: 50%; background: #1D3A8A; color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: 700; flex-shrink: 0;
+  }
+  .am-plus {
+    position: absolute; top: 16px; right: 16px; width: 22px; height: 22px; border-radius: 6px;
+    background: #1D4ED8; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+  .am-trash { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #B23A2E; font-size: 13px; }
+  .am-banner { margin: 0 16px 10px; padding: 10px 11px; background: #DCE6F7; border-radius: 10px; display: flex; gap: 9px; align-items: flex-start; }
+  .am-banner-icon { width: 24px; height: 24px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .am-banner-lab { font-size: 6.5px; font-weight: 700; color: #1D4ED8; letter-spacing: 0.03em; }
+  .am-banner-title { font-size: 9px; font-weight: 700; margin-top: 2px; }
+  .am-banner-sub { font-size: 7.5px; color: #5A6478; margin-top: 2px; }
+  .am-nav {
+    position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around;
+    padding: 8px 4px 10px; border-top: 1px solid #E2DCC8; background: #F7F3EA; flex-shrink: 0;
+  }
+  .am-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 6.3px; color: #9A947F; font-weight: 600; }
+  .am-nav-item.active { color: #17140F; }
+  .am-check { font-size: 7.5px; color: #1B8A4C; padding: 0 16px; line-height: 1.5; text-align: center; }
+  .phone-card figcaption {
+    font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: #8B958C;
+  }
+
+  /* Floating glass stat chips on the hero phone */
+  .glass-chip {
+    position: absolute; z-index: 4; pointer-events: none;
+    background: rgba(255,255,255,0.07); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 11px 14px;
+    box-shadow: 0 20px 44px -16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
+    opacity: 0; animation: chipIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  .glass-chip .gc-lab { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.55); }
+  .glass-chip .gc-num { font-family: var(--font-mono); font-size: 15px; font-weight: 600; margin-top: 3px; color: #fff; white-space: nowrap; }
+  .glass-chip.gc-1 { top: -32px; left: -30px; transform: rotate(-4deg); animation-delay: 0.3s; }
+  .glass-chip.gc-2 { bottom: -18px; right: -26px; transform: rotate(3deg); animation-delay: 0.5s; }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(8px) rotate(var(--rot, 0deg)); } to { opacity: 1; } }
 
   /* -------------------- CTA -------------------- */
   .cta-box {
-    border: 1.5px solid var(--ink); border-radius: 8px; padding: 48px 36px;
-    background: var(--bg-card); position: relative; overflow: hidden;
+    border: 1px solid var(--line); border-radius: 16px; padding: 52px 40px;
+    background: linear-gradient(160deg, var(--bg-raised), var(--bg));
+    position: relative; overflow: hidden;
   }
-  .cta-box::before {
-    content: ''; position: absolute; inset: 0;
-    background-image: repeating-linear-gradient(to bottom, transparent, transparent 43px, var(--rule) 44px);
-    opacity: 0.5; pointer-events: none;
-  }
-  .cta-inner { position: relative; max-width: 620px; }
-  .cta h2 { margin-bottom: 14px; }
-  .cta p { color: var(--ink-soft); font-size: 16px; margin-bottom: 28px; }
-  .cta-form { display: flex; flex-direction: column; gap: 12px; max-width: 440px; }
+  .cta-inner { display: grid; grid-template-columns: 1fr; gap: 40px; }
+  .cta-copy h2 { margin-bottom: 14px; }
+  .cta-copy p { color: var(--ink-soft); font-size: 16px; max-width: 42ch; }
+  .cta-fine { margin-top: 20px; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); }
+  .cta-fine a { color: var(--accent); text-decoration: none; }
+
+  .cta-form { display: flex; flex-direction: column; gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); }
   .cta-form input, .cta-form textarea {
     font-family: var(--font-body); font-size: 14.5px; padding: 12px 14px;
-    border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--bg-page); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 7px; background: var(--bg); color: var(--ink);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  .cta-form input:focus, .cta-form textarea:focus { outline: none; border-color: var(--ledger-green); }
-  .cta-fine { margin-top: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); }
+  .cta-form input::placeholder, .cta-form textarea::placeholder { color: var(--ink-faint); }
+  .cta-form input:focus, .cta-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
   /* -------------------- Footer -------------------- */
-  footer { border-top: 1px solid var(--rule); padding: 40px 0; }
+  footer { border-top: 1px solid var(--line-soft); padding: 40px 0; }
   .foot-inner { display: flex; flex-direction: column; gap: 18px; font-size: 13.5px; color: var(--ink-faint); }
   .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .foot-brand { font-family: var(--font-display); font-size: 18px; color: var(--ink); }
+  .foot-brand { font-family: var(--font-display); font-size: 17px; color: var(--ink); font-weight: 600; }
+
+  /* -------------------- Reveal on scroll -------------------- */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
 
   /* -------------------- Responsive -------------------- */
   @media (min-width: 640px) {
-    .problem-grid { grid-template-columns: repeat(3, 1fr); }
+    .problem-grid { grid-template-columns: 1.2fr 1fr; }
+    .p-card.big { grid-row: span 2; }
+    .cluster-grid { grid-template-columns: repeat(2, 1fr); }
+    .step-row { grid-template-columns: repeat(3, 1fr); }
+    .plat-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (min-width: 780px) {
-    .brand-tag { display: block; }
     nav.links { display: flex; }
-    .hero-inner { grid-template-columns: 1.05fr 0.95fr; }
-    h1 { max-width: 14ch; }
-    .plat-grid { grid-template-columns: 1fr 1fr; }
-    .cap-row { grid-template-columns: 44px 1fr; }
+    .hero-inner { grid-template-columns: 1.1fr 0.9fr; }
+    h1 { max-width: 13ch; }
+    .cta-inner { grid-template-columns: 1.1fr 1fr; }
+  }
+  @media (min-width: 980px) {
+    .cluster-grid { grid-template-columns: repeat(4, 1fr); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
-<body class="ledger-bg">
+<body>
 
 <header class="nav">
   <div class="nav-inner">
     <div class="brand">
       <span class="brand-mark">A</span>
       AMS
-      <span class="brand-tag">Accounting Made Simple</span>
     </div>
     <nav class="links">
       <a href="#platform">Platform</a>
       <a href="#how">How it works</a>
       <a href="#platforms">Where it runs</a>
     </nav>
-    <a href="#pitch" class="btn btn-primary">Book a walkthrough</a>
+    <div class="nav-right">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+        <i class="ph ph-moon"></i>
+        <i class="ph ph-sun-dim"></i>
+      </button>
+      <a href="#pitch" class="btn btn-primary magnetic">Get early access</a>
+    </div>
   </div>
 </header>
 
 <section class="hero">
   <div class="wrap hero-inner">
     <div>
-      <span class="eyebrow">Now onboarding early businesses</span>
-      <h1>One system for the entire <em>financial</em> side of your business.</h1>
-      <p class="hero-sub">Invoicing, bank feeds, real financial statements, tax ready reports, and a live view for your accountant built as one connected platform, not a spreadsheet held together with hope.</p>
+      <h1>The books, finally caught up with <span class="accent">the business.</span></h1>
+      <p class="hero-sub">Invoicing, bank feeds, real financial statements, and a live view for your accountant, running as one connected system instead of five disconnected tools.</p>
       <div class="hero-ctas">
-        <a href="#pitch" class="btn btn-primary">Book a walkthrough</a>
-        <a href="#platform" class="btn btn-ghost">See the full platform</a>
+        <a href="#pitch" class="btn btn-primary magnetic">Get early access</a>
+        <a href="#platform" class="btn btn-ghost magnetic">See the platform</a>
       </div>
-      <p class="hero-note">Mobile app + companion website = one login, one set of books.</p>
     </div>
 
-    <div class="mockup-card" aria-hidden="true">
-      <div class="mockup-head">
-        <span>Overview</span>
-        <span>AMS Enterprise</span>
+    <div class="hero-visual" id="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none">
+        <circle class="ring" cx="200" cy="200" r="170" stroke-width="1"/>
+        <circle class="ring" cx="200" cy="200" r="120" stroke-width="1"/>
+        <path class="growth-line" d="M 60 280 L 130 240 L 175 265 L 230 170 L 275 190 L 340 100"
+              stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="340" cy="100" r="6" fill="var(--accent)"/>
+      </svg>
+      <div class="float-card fc-1">
+        <div class="fc-lab">Net profit, Aug</div>
+        <div class="fc-num pos" data-count-to="3150" data-prefix="+">+0</div>
       </div>
-      <div class="mockup-body">
-        <div class="cmd-stats">
-          <div class="cmd-stat">
-            <div class="cmd-lab">Cash position</div>
-            <div class="cmd-num">24,600</div>
-          </div>
-          <div class="cmd-stat">
-            <div class="cmd-lab">Outstanding invoices</div>
-            <div class="cmd-num num-warn">4,200</div>
-            <div class="cmd-sub">3 unpaid</div>
-          </div>
-          <div class="cmd-stat">
-            <div class="cmd-lab">30-day forecast</div>
-            <div class="cmd-num num-pos">+6,150</div>
-          </div>
-          <div class="cmd-stat">
-            <div class="cmd-lab">Net profit (Aug)</div>
-            <div class="cmd-num num-pos">3,150</div>
-          </div>
-        </div>
-        <div class="cmd-row">
-          <div class="cmd-row-left">
-            <div class="avatars">
-              <span class="avatar">K</span>
-              <span class="avatar">A</span>
-            </div>
-            Owner + Accountant, same live books
-          </div>
-        </div>
-        <span class="stamp">✓ Books reconciled</span>
+      <div class="float-card fc-2">
+        <div class="fc-lab">Books status</div>
+        <div class="fc-num">Reconciled</div>
       </div>
     </div>
   </div>
@@ -328,26 +539,25 @@
 
 <section class="problem">
   <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">The problem</span>
+    <div class="section-head reveal">
       <h2>Running a small business means running five systems at once</h2>
       <p class="section-sub">Invoices in one place, the bank statement in another, taxes handled once a year in a panic, and no one but the owner actually understands any of it.</p>
     </div>
     <div class="problem-grid">
-      <div class="problem-card">
-        <div class="mark"> unpaid and forgotten</div>
-        <strong>Invoices nobody's chasing</strong>
-        <p>Money owed to you sits unpaid because nothing's tracking who owes what, or since when.</p>
+      <div class="p-card big reveal">
+        <div class="p-num">01</div>
+        <strong>Only one person understands the books</strong>
+        <p>If the owner is the only one who can explain the numbers, the accountant is always working from a snapshot instead of the real thing. AMS puts owner, co-founder, and accountant on the same live ledger.</p>
       </div>
-      <div class="problem-card">
-        <div class="mark">flying blind</div>
+      <div class="p-card reveal">
+        <div class="p-num">02</div>
+        <strong>Invoices nobody's chasing</strong>
+        <p>Money owed to you sits unpaid because nothing is tracking who owes what, or since when.</p>
+      </div>
+      <div class="p-card reveal">
+        <div class="p-num">03</div>
         <strong>No idea what's coming</strong>
         <p>Revenue looks fine today. Whether there's enough cash for next month's rent is a different question entirely.</p>
-      </div>
-      <div class="problem-card">
-        <div class="mark">one point of failure</div>
-        <strong>Only one person understands the books</strong>
-        <p>If the owner's the only one who can explain the numbers, the accountant is always working from a snapshot, not the real thing.</p>
       </div>
     </div>
   </div>
@@ -355,215 +565,451 @@
 
 <section id="platform">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="kicker">The platform</span>
       <h2>Everything a growing business needs from its books</h2>
-      <p class="section-sub">Built in the open here's exactly what's running today, and what's shipping next.</p>
+      <p class="section-sub">Built in the open. Here's exactly what's running today, and what's shipping next.</p>
     </div>
 
-    <div class="cap-legend">
-      <div class="cap-legend-item"><span class="dot dot-live"></span> Live now</div>
-      <div class="cap-legend-item"><span class="dot dot-soon"></span>Coming Soon</div>
+    <div class="cap-legend reveal">
+      <div class="cap-legend-item"><span class="dot dot-live"></span>Live now</div>
+      <div class="cap-legend-item"><span class="dot dot-soon"></span>Coming soon</div>
     </div>
 
-    <div class="cap-list">
-      <div class="cap-row">
-        <span class="cap-idx">01</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Invoicing &amp; payments</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Create and send invoices, track paid versus unpaid, and let revenue log itself the moment a payment lands.</p>
+    <div class="cluster reveal">
+      <div class="cluster-title">Money in, tracked automatically</div>
+      <div class="cluster-grid">
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-receipt"></i></div>
+          <div class="cap-title">Invoicing &amp; payments</div>
+          <p class="cap-desc">Send invoices and let revenue log itself the moment a payment lands.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-bank"></i></div>
+          <div class="cap-title">Bank synchronization</div>
+          <p class="cap-desc">Connect an account and let transactions arrive automatically.</p>
+          <div class="cap-status status-soon"><span class="dot"></span>Coming soon</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-users-three"></i></div>
+          <div class="cap-title">Customer payment tracking</div>
+          <p class="cap-desc">See who owes you, how much, and how overdue, at a glance.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-chart-line-up"></i></div>
+          <div class="cap-title">Cash-flow forecasting</div>
+          <p class="cap-desc">A projection built from real history, so gaps are visible before they happen.</p>
+          <div class="cap-status status-soon"><span class="dot"></span>Coming soon</div>
         </div>
       </div>
+    </div>
 
-      <div class="cap-row">
-        <span class="cap-idx">02</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Bank synchronization</span>
-            <span class="cap-status status-soon">Coming soon</span>
-          </div>
-          <p class="cap-desc">Connect a bank account and let transactions arrive automatically, instead of entering every line by hand.</p>
+    <div class="cluster reveal">
+      <div class="cluster-title">The real numbers, always current</div>
+      <div class="cluster-grid">
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-chart-pie-slice"></i></div>
+          <div class="cap-title">Financial reports</div>
+          <p class="cap-desc">P&amp;L, balance sheet, and cash flow, generated for any date range.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-folder-simple"></i></div>
+          <div class="cap-title">Tax preparation</div>
+          <p class="cap-desc">Reports formatted well enough to hand straight to a preparer.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-clock-counter-clockwise"></i></div>
+          <div class="cap-title">Business history</div>
+          <p class="cap-desc">Every transaction, searchable back to day one.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-magnifying-glass"></i></div>
+          <div class="cap-title">Customer &amp; supplier insights</div>
+          <p class="cap-desc">Know your best customers and your biggest costs at a glance.</p>
+          <div class="cap-status status-soon"><span class="dot"></span>Coming soon</div>
         </div>
       </div>
+    </div>
 
-      <div class="cap-row">
-        <span class="cap-idx">03</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Financial reports</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Profit &amp; loss, balance sheet, cash flow, and trial balance, generated straight from your ledger for any date range.</p>
+    <div class="cluster reveal">
+      <div class="cluster-title">Room for the whole team</div>
+      <div class="cluster-grid">
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-user-plus"></i></div>
+          <div class="cap-title">Multiple users</div>
+          <p class="cap-desc">Invite a bookkeeper or accountant into the same live books.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
         </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">04</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Tax preparation</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Reports formatted and organized well enough to hand straight to a tax preparer, no reformatting required.</p>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-squares-four"></i></div>
+          <div class="cap-title">Accountant dashboard</div>
+          <p class="cap-desc">A dedicated view for the person who reconciles the books.</p>
+          <div class="cap-status status-soon"><span class="dot"></span>Coming soon</div>
         </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">05</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Multiple users</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Invite a co-owner, bookkeeper, or accountant into the same live set of books no more emailing spreadsheets back and forth.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">06</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Business history</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Every transaction, searchable and filterable, going back to day one nothing lost to a faded receipt or a full drawer.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">07</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Customer payment tracking</span>
-            <span class="cap-status status-live">Live now<</span>
-          </div>
-          <p class="cap-desc">See exactly who owes you, how much, and how overdue, without digging back through old invoices.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">08</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Cash-flow forecasting</span>
-            <span class="cap-status status-soon">Coming Soon</span>
-          </div>
-          <p class="cap-desc">A projection of what's coming based on real transaction history, so cash gaps are visible before they happen.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">09</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Customer &amp; supplier insights</span>
-            <span class="cap-status status-soon">Coming Soon</span>
-          </div>
-          <p class="cap-desc">Know at a glance who your best customers are and where your biggest costs are actually coming from.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">10</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Inventory &amp; profit tracking</span>
-            <span class="cap-status status-live">Live now</span>
-          </div>
-          <p class="cap-desc">Track stock levels alongside true margin per product, not just revenue in and expenses out.</p>
-        </div>
-      </div>
-
-      <div class="cap-row">
-        <span class="cap-idx">11</span>
-        <div class="cap-body">
-          <div class="cap-top">
-            <span class="cap-title">Accountant dashboard</span>
-            <span class="cap-status status-soon">Coming soon</span>
-          </div>
-          <p class="cap-desc">A dedicated view built for the person who actually reconciles the books, not a repurposed owner's screen.</p>
+        <div class="cap-card">
+          <div class="cap-icon"><i class="ph ph-package"></i></div>
+          <div class="cap-title">Inventory &amp; profit tracking</div>
+          <p class="cap-desc">Track stock alongside true margin per product.</p>
+          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="how" style="background:var(--bg-card); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);">
+<section id="how" class="how">
   <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">How it works</span>
+    <div class="section-head reveal">
       <h2>Three steps, in this order</h2>
     </div>
-    <ol class="steps">
-      <li class="step">
+    <div class="step-row">
+      <div class="step reveal">
         <span class="step-num">01</span>
-        <div>
-          <h4>Everything lands in one place</h4>
-          <p>Invoices sent, expenses logged, bank transactions synced all of it flows into a single ledger instead of five separate tools.</p>
-        </div>
-      </li>
-      <li class="step">
+        <h4>Everything lands in one place</h4>
+        <p>Invoices sent, expenses logged, bank transactions synced. All of it flows into a single ledger instead of five separate tools.</p>
+      </div>
+      <div class="step reveal">
         <span class="step-num">02</span>
-        <div>
-          <h4>The system does the accounting</h4>
-          <p>Entries get categorized, invoices get tracked to paid or overdue, and the numbers stay current without a monthly close.</p>
-        </div>
-      </li>
-      <li class="step">
+        <h4>The system does the accounting</h4>
+        <p>Entries get categorized, invoices get tracked to paid or overdue, and the numbers stay current without a monthly close.</p>
+      </div>
+      <div class="step reveal">
         <span class="step-num">03</span>
-        <div>
-          <h4>Everyone who needs it, sees it</h4>
-          <p>The owner, a co-founder, and an accountant all look at the same real numbers reports, forecasts, and all at the same time.</p>
-        </div>
-      </li>
-    </ol>
+        <h4>Everyone who needs it, sees it</h4>
+        <p>The owner, a co-founder, and an accountant look at the same real numbers, reports and all, at the same time.</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="platforms" class="platforms">
+<section id="platforms">
   <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">Everywhere the work happens</span>
+    <div class="section-head reveal">
       <h2>One set of books, two ways in</h2>
       <p class="section-sub">The same account, the same numbers, whether you're on the move or sitting down to close out the week.</p>
     </div>
     <div class="plat-grid">
-      <div class="plat-card">
-        <div class="plat-label">iOS &amp; Android</div>
+      <div class="plat-card mobile reveal">
+        <i class="ph ph-device-mobile plat-icon"></i>
+        <span class="plat-label">iOS &amp; Android</span>
         <h4>The mobile app</h4>
-        <p>Built for the moment something happens an invoice goes out, a receipt lands in your hand, a payment comes in.</p>
+        <p>Built for the moment something happens. An invoice goes out, a receipt lands in your hand, a payment comes in.</p>
       </div>
-      <div class="plat-card">
-        <div class="plat-label">Web</div>
+      <div class="plat-card web reveal">
+        <i class="ph ph-desktop plat-icon"></i>
+        <span class="plat-label">Web</span>
         <h4>The companion website</h4>
-        <p>Built for the sit down work batch entry, reviewing reports, and the view your accountant will actually use.</p>
+        <p>Built for the sit-down work: batch entry, reviewing reports, and the view your accountant will actually use.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="app" class="showcase">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Inside the app</span>
+      <h2>Every screen built for the way you actually run the shop</h2>
+      <p class="section-sub">Invoicing, bank sync, tax prep, and the real numbers, all live on your phone.</p>
+    </div>
+  </div>
+  <div class="phone-rail-outer reveal">
+    <div class="phone-rail">
+      <figure class="phone-card">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="am" role="img" aria-label="Home screen for leo bakery showing total revenue, outstanding balance, and quick links to invoicing, tax prep, customers, and inventory">
+              <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+              <div class="am-header">Good afternoon<br><span style="font-size:17px;">leo bakery</span></div>
+              <div class="am-body">
+                <div class="am-stat-row">
+                  <div class="am-stat pos"><div class="am-stat-lab">Total revenue</div><div class="am-stat-num">5,000</div></div>
+                  <div class="am-stat neg"><div class="am-stat-lab">Outstanding</div><div class="am-stat-num">0</div></div>
+                </div>
+                <div class="am-btn black">+ Add entry</div>
+                <div class="am-banner">
+                  <div class="am-banner-icon"><i class="ph ph-squares-four"></i></div>
+                  <div>
+                    <div class="am-banner-lab">RECOMMENDED</div>
+                    <div class="am-banner-title">Import a day's entries on the web</div>
+                    <div class="am-banner-sub">Faster spreadsheet-style entry for batches.</div>
+                  </div>
+                </div>
+                <div class="am-row"><div class="am-row-icon" style="background:#DCE6F7;color:#1D4ED8;"><i class="ph ph-file-text"></i></div><div class="am-row-body"><div class="am-row-title">Invoicing and payments</div><div class="am-row-sub">Create your first invoice</div></div></div>
+                <div class="am-row"><div class="am-row-icon" style="background:#F7E9D2;color:#8A5A1E;"><i class="ph ph-calculator"></i></div><div class="am-row-body"><div class="am-row-title">Tax preparation</div><div class="am-row-sub">Set up your filing schedule</div></div></div>
+              </div>
+              <div class="am-nav">
+                <div class="am-nav-item active"><i class="ph-fill ph-house"></i>Home</div>
+                <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
+                <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
+                <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
+                <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-chip gc-1" aria-hidden="true"><div class="gc-lab">Total revenue</div><div class="gc-num">GHS 5,000</div></div>
+          <div class="glass-chip gc-2" aria-hidden="true"><div class="gc-lab">Outstanding</div><div class="gc-num">GHS 0</div></div>
+        </div>
+        <figcaption>Home</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Ledger screen listing recent revenue, cost of goods, operating expense, liability, and asset entries">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Ledger</div>
+            <div class="am-tabs"><span class="am-tab active">All</span><span class="am-tab">Revenue</span><span class="am-tab">Cost of goods</span><span class="am-tab">Op. expense</span></div>
+            <div class="am-body">
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Sales service<span class="am-l-sub">Revenue</span></span><span class="am-pos">+5,000</span></div>
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Equipments<span class="am-l-sub">Cost of goods</span></span><span class="am-neg">-700</span></div>
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Rent<span class="am-l-sub">Operating expense</span></span><span class="am-neg">-860</span></div>
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Loan<span class="am-l-sub">Liability</span></span><span class="am-neg">-7,000</span></div>
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Current Asset<span class="am-l-sub">Asset</span></span><span class="am-neg">-14,000</span></div>
+              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Mr Opong<span class="am-l-sub">Revenue</span></span><span class="am-pos">+6,589.56</span></div>
+            </div>
+            <div class="am-nav">
+              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
+              <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
+              <div class="am-nav-item active"><i class="ph-fill ph-list-bullets"></i>Ledger</div>
+              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
+              <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Ledger</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Capture screen for uploading an invoice or receipt PDF">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Capture</div>
+            <div class="am-body" style="display:flex; flex-direction:column; align-items:center; padding-top:18px;">
+              <div style="width:calc(100% - 32px); border:1.5px dashed #D8D0BC; border-radius:12px; padding:34px 12px; text-align:center; color:#9A947F;">
+                <i class="ph ph-file-text" style="font-size:26px;"></i>
+                <div style="font-size:8.5px; margin-top:10px;">Upload an invoice or receipt PDF</div>
+              </div>
+              <div class="am-btn black" style="width:calc(100% - 32px); margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-upload-simple"></i>Upload PDF</div>
+            </div>
+            <div class="am-nav">
+              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
+              <div class="am-nav-item active"><i class="ph-fill ph-camera"></i>Capture</div>
+              <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
+              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
+              <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Capture</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Invoices list showing draft, paid, and overdue invoices">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header center">Invoices<span class="am-plus"><i class="ph-bold ph-plus"></i></span></div>
+            <div class="am-tabs"><span class="am-tab active">All</span><span class="am-tab">Paid</span><span class="am-tab">Overdue</span><span class="am-tab">Draft</span></div>
+            <div class="am-body">
+              <div class="am-row"><div class="am-avatar" style="background:#2E4EA6;">MK</div><div class="am-row-body"><div class="am-row-title">Mrs Kotei</div><div class="am-row-sub">INV-0002 &middot; Not sent</div></div><div class="am-row-amt">850<div class="am-badge draft">DRAFT</div></div></div>
+              <div class="am-row"><div class="am-avatar" style="background:#2E4EA6;">MO</div><div class="am-row-body"><div class="am-row-title">Mr Opong</div><div class="am-row-sub">INV-0001 &middot; Paid Aug 13</div></div><div class="am-row-amt">6,589.56<div class="am-badge paid">PAID</div></div></div>
+              <div class="am-row"><div class="am-avatar" style="background:#6B6455;">R</div><div class="am-row-body"><div class="am-row-title">Richard</div><div class="am-row-sub">INV-0003 &middot; Due Aug 12</div></div><div class="am-row-amt">678<div class="am-badge overdue">OVERDUE</div></div></div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Invoices</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Invoice detail for Mr Opong showing amount paid and description">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header center">INV-0001<span class="am-trash"><i class="ph ph-trash"></i></span></div>
+            <div class="am-body">
+              <div class="am-card">
+                <div style="font-family:var(--font-display); font-weight:700; font-size:11px;">Mr Opong</div>
+                <div style="font-size:7.5px; color:#8A8373; margin-bottom:8px;">oppongernest@gmail.com</div>
+                <div class="am-card-big" style="font-size:20px;">6,589.56</div>
+              </div>
+              <div class="am-card">
+                <div class="am-line"><span class="am-l-lab">Due date</span><span>August 27, 2026</span></div>
+                <div class="am-line"><span class="am-l-lab">Paid on</span><span>August 13, 2026</span></div>
+                <div class="am-line"><span class="am-l-lab">Description</span><span>Credit sales</span></div>
+              </div>
+              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-share-network"></i>Share invoice</div>
+              <div class="am-check"><i class="ph-bold ph-check"></i> This invoice is paid. A matching revenue entry was added to your ledger automatically.</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Invoice</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Profit and loss report for August showing revenue, cost of goods, operating expenses, and net profit">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Reports</div>
+            <div class="am-tabs"><span class="am-tab active">P&amp;L</span><span class="am-tab">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab">Trial balance</span></div>
+            <div class="am-body">
+              <div class="am-card">
+                <div class="am-card-lab">Profit &amp; loss &middot; August</div>
+                <div class="am-line"><span class="am-l-lab">Revenue</span><span>11,589.56</span></div>
+                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span>700</span></div>
+                <div class="am-line"><span class="am-l-lab">Operating expenses</span><span>860</span></div>
+                <div class="am-line total"><span class="am-l-lab">Net profit</span><span class="am-pos">10,029.56</span></div>
+              </div>
+              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-download-simple"></i>Export PDF</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>P&amp;L</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Balance sheet report showing total assets, liabilities, and equity">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Reports</div>
+            <div class="am-tabs"><span class="am-tab">P&amp;L</span><span class="am-tab active">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab">Trial balance</span></div>
+            <div class="am-body">
+              <div class="am-card">
+                <div class="am-card-lab">Balance sheet &middot; as of today</div>
+                <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; margin:4px 0 2px;">Assets</div>
+                <div class="am-line"><span class="am-l-lab">Cash</span><span>3,029.56</span></div>
+                <div class="am-line"><span class="am-l-lab">Fixed assets</span><span>14,000</span></div>
+                <div class="am-line total"><span class="am-l-lab">Total assets</span><span class="am-pos">17,029.56</span></div>
+                <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; margin:8px 0 2px;">Liabilities &amp; equity</div>
+                <div class="am-line"><span class="am-l-lab">Total liabilities</span><span>7,000</span></div>
+                <div class="am-line"><span class="am-l-lab">Equity</span><span>10,029.56</span></div>
+                <div class="am-line total"><span class="am-l-lab">Total liab. + equity</span><span>17,029.56</span></div>
+              </div>
+              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-download-simple"></i>Export PDF</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Balance sheet</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Trial balance report showing debit and credit totals by category">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Reports</div>
+            <div class="am-tabs"><span class="am-tab">P&amp;L</span><span class="am-tab">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab active">Trial balance</span></div>
+            <div class="am-body">
+              <div class="am-card">
+                <div class="am-card-lab">Trial balance &middot; August</div>
+                <div class="am-line" style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.03em;"><span>Category</span><span style="display:flex; gap:14px;"><span>Debit</span><span>Credit</span></span></div>
+                <div class="am-line"><span class="am-l-lab">Revenue</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>&mdash;</span><span>11,589.56</span></span></div>
+                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>700</span><span>&mdash;</span></span></div>
+                <div class="am-line"><span class="am-l-lab">Operating expense</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>860</span><span>&mdash;</span></span></div>
+                <div class="am-line"><span class="am-l-lab">Asset purchases</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>14,000</span><span>&mdash;</span></span></div>
+                <div class="am-line"><span class="am-l-lab">Liabilities</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>&mdash;</span><span>7,000</span></span></div>
+                <div class="am-line total"><span class="am-l-lab">Totals</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>15,560</span><span>18,589.56</span></span></div>
+              </div>
+              <div class="am-note">This is a category summary, not a formal double-entry trial balance. The difference reflects net profit and financing activity for the period.</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Trial balance</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Tax preparation screen showing next filing date, filing period, and net taxable income">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header center"><span class="am-back"><i class="ph ph-caret-left"></i></span>Tax preparation</div>
+            <div class="am-body">
+              <div class="am-card">
+                <div class="am-card-lab">Next filing</div>
+                <div class="am-card-big">August 13, 2027</div>
+                <div class="am-card-sub">365 days away &middot; Filing annually</div>
+                <div class="am-card-link">Edit filing schedule</div>
+              </div>
+              <div class="am-tabs"><span class="am-tab active">This month</span><span class="am-tab">This quarter</span><span class="am-tab">This year</span></div>
+              <div class="am-card">
+                <div class="am-card-lab">Tax summary &middot; August 2026</div>
+                <div class="am-line"><span class="am-l-lab">Income</span><span>11,589.56</span></div>
+                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span>-700</span></div>
+                <div class="am-line"><span class="am-l-lab">Operating expenses</span><span>-860</span></div>
+                <div class="am-line total"><span class="am-l-lab">Net taxable income</span><span class="am-pos">10,029.56</span></div>
+              </div>
+              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-share-network"></i>Share summary</div>
+              <div class="am-note">Reference only, does not calculate tax owed. Confirm everything with a licensed tax preparer before filing.</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Tax prep</figcaption>
+      </figure>
+
+      <figure class="phone-card">
+        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
+          <div class="am" role="img" aria-label="Settings screen showing business details, account email, data export, and support">
+            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+            <div class="am-header">Settings</div>
+            <div class="am-body">
+              <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; padding:0 16px 4px;">Business</div>
+              <div class="am-card">
+                <div class="am-line"><span class="am-l-lab">Name</span><span>leo bakery</span></div>
+                <div class="am-line"><span class="am-l-lab">Industry</span><span>Food and beverage</span></div>
+                <div class="am-line"><span class="am-l-lab">Currency</span><span>GHS</span></div>
+                <div class="am-card-link">Edit business details</div>
+              </div>
+              <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; padding:0 16px 4px;">Account</div>
+              <div class="am-card" style="padding-bottom:2px;">
+                <div class="am-line"><span class="am-l-lab">Email</span><span style="font-size:8px;">elioenailderksen@gmail.com</span></div>
+                <div class="am-line" style="color:#B23A2E; font-weight:700;"><span>Sign out</span><i class="ph ph-sign-out"></i></div>
+              </div>
+            </div>
+            <div class="am-nav">
+              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
+              <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
+              <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
+              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
+              <div class="am-nav-item active"><i class="ph-fill ph-gear"></i>Settings</div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption>Settings</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
 <section id="pitch" class="cta">
   <div class="wrap">
-    <div class="cta-box">
+    <div class="cta-box reveal">
       <div class="cta-inner">
-        <span class="kicker">Get in touch</span>
-        <h2>We're onboarding a small number of early businesses</h2>
-        <p>Tell us a bit about your business and what you're currently using to manage it we'll follow up directly to set up a walkthrough.</p>
+        <div class="cta-copy">
+          <span class="kicker">Get in touch</span>
+          <h2>We're onboarding a small number of early businesses</h2>
+          <p>Tell us a bit about your business and what you're currently using to manage it. We'll follow up directly to set up a walkthrough.</p>
+          <p class="cta-fine">Or write directly to <a href="mailto:leokofiderksen@gmail.com">leokofiderksen@gmail.com</a></p>
+        </div>
         <form class="cta-form" action="mailto:hello@ams-app.com" method="post" enctype="text/plain">
-          <input type="text" name="name" placeholder="Your name" required>
-          <input type="text" name="business" placeholder="Business name" required>
-          <input type="email" name="email" placeholder="Email address" required>
-          <textarea name="message" rows="3" placeholder="What are you using for bookkeeping today?"></textarea>
-          <a href="mailto:leokofiderksen@gmail.com"
-   class="btn btn-primary"
-   style="margin-top:6px; width:fit-content;">
-  Send it over
-</a>
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Jamie Rivera" required>
+          </div>
+          <div class="field">
+            <label for="business">Business name</label>
+            <input type="text" id="business" name="business" placeholder="Rivera Woodworks" required>
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="jamie@riverawoodworks.com" required>
+          </div>
+          <div class="field">
+            <label for="message">What are you using today</label>
+            <textarea id="message" name="message" rows="3" placeholder="Spreadsheets, a mix of apps, nothing yet..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary magnetic" style="margin-top:6px; width:fit-content;">Get early access</button>
         </form>
-        <p class="cta-fine">Or write directly to leokofiderksen@gmail.com</p>
       </div>
     </div>
   </div>
@@ -580,17 +1026,108 @@
 </footer>
 
 <script>
-  const mockup = document.querySelector('.mockup-card');
-  if (mockup && 'IntersectionObserver' in window) {
-    const animated = mockup.querySelectorAll('.cmd-stat, .cmd-row, .stamp');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* Scroll reveal */
+  if ('IntersectionObserver' in window) {
+    var els = document.querySelectorAll('.reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          animated.forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; });
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.4 });
-    io.observe(mockup);
+    }, { threshold: 0.15 });
+    els.forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* Theme toggle */
+  var toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', function () {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    toggle.setAttribute('aria-pressed', String(next === 'dark'));
+    localStorage.setItem('ams-theme', next);
+  });
+  toggle.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
+
+  /* Magnetic buttons */
+  if (!reduceMotion && canHover) {
+    document.querySelectorAll('.magnetic').forEach(function (btn) {
+      var strength = 14;
+      btn.addEventListener('mousemove', function (e) {
+        var rect = btn.getBoundingClientRect();
+        var relX = (e.clientX - rect.left) / rect.width - 0.5;
+        var relY = (e.clientY - rect.top) / rect.height - 0.5;
+        btn.style.transform = 'translate(' + (relX * strength) + 'px, ' + (relY * strength) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function () {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+  /* Spotlight-border capability cards */
+  if (!reduceMotion && canHover) {
+    document.querySelectorAll('.cap-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+      });
+    });
+  }
+
+  /* Hero parallax tilt */
+  var heroVisual = document.getElementById('hero-visual');
+  if (!reduceMotion && canHover && heroVisual) {
+    document.querySelector('.hero').addEventListener('mousemove', function (e) {
+      var rect = heroVisual.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      var dx = (e.clientX - cx) / rect.width;
+      var dy = (e.clientY - cy) / rect.height;
+      heroVisual.style.transform = 'rotateX(' + (dy * -6) + 'deg) rotateY(' + (dx * 6) + 'deg)';
+    });
+    document.querySelector('.hero').addEventListener('mouseleave', function () {
+      heroVisual.style.transform = '';
+    });
+  }
+
+  /* Count-up numbers when in view */
+  if (!reduceMotion) {
+    var counters = document.querySelectorAll('[data-count-to]');
+    var counterIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var target = parseInt(el.getAttribute('data-count-to'), 10);
+        var prefix = el.getAttribute('data-prefix') || '';
+        var start = null;
+        var duration = 1100;
+        function step(ts) {
+          if (!start) start = ts;
+          var progress = Math.min((ts - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var value = Math.round(eased * target);
+          el.textContent = prefix + value.toLocaleString('en-US');
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        counterIO.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { counterIO.observe(el); });
+  } else {
+    document.querySelectorAll('[data-count-to]').forEach(function (el) {
+      var prefix = el.getAttribute('data-prefix') || '';
+      el.textContent = prefix + parseInt(el.getAttribute('data-count-to'), 10).toLocaleString('en-US');
+    });
   }
 </script>
 

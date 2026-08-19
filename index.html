@@ -1,1135 +1,705 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AMS — Accounting Made Simple Info</title>
-<meta name="description" content="One connected system for invoicing, bank sync, financial reports, and tax prep. Built for small businesses who'd rather be running their business.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-<script>
-  (function () {
-    var saved = localStorage.getItem('ams-theme');
-    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-  })();
-</script>
-<style>
-  :root {
-    --bg: #FBFCFA;
-    --bg-raised: #F2F4EE;
-    --bg-raised-2: #E9ECE3;
-    --line: #DEE3D6;
-    --line-soft: #ECEFE7;
-    --ink: #12160F;
-    --ink-soft: #57624F;
-    --ink-faint: #8B9581;
-    --accent: #1B8A4C;
-    --accent-strong: #14703B;
-    --accent-soft: rgba(27, 138, 76, 0.08);
-    --accent-line: rgba(27, 138, 76, 0.32);
-    --on-accent: #FBFCFA;
-    --shadow: rgba(18, 22, 15, 0.10);
-
-    --font-display: 'Fredoka', sans-serif;
-    --font-body: 'Nunito', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
-    --max-width: 1180px;
-    --radius: 10px;
-  }
-
-  :root[data-theme="dark"] {
-    --bg: #0A0D0A;
-    --bg-raised: #12160F;
-    --bg-raised-2: #1B2117;
-    --line: #29321F;
-    --line-soft: #1A2015;
-    --ink: #F2F5EE;
-    --ink-soft: #A9B39F;
-    --ink-faint: #6B7563;
-    --accent: #3FD986;
-    --accent-strong: #6EE8A6;
-    --accent-soft: rgba(63, 217, 134, 0.12);
-    --accent-line: rgba(63, 217, 134, 0.38);
-    --on-accent: #0A0D0A;
-    --shadow: rgba(0, 0, 0, 0.45);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    transition: background 0.35s ease, color 0.35s ease;
-  }
-  img, svg { display: block; max-width: 100%; }
-  a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-  .wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 28px; }
-
-  /* -------------------- Nav -------------------- */
-  header.nav {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line-soft);
-    transition: background 0.35s ease, border-color 0.35s ease;
-  }
-  .nav-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 28px; max-width: var(--max-width); margin: 0 auto;
-    height: 68px; gap: 16px;
-  }
-  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 0; }
-  .brand-mark {
-    width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0;
-    background: var(--accent); color: var(--on-accent);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
-    transition: background 0.35s ease;
-  }
-  nav.links { display: none; gap: 30px; font-size: 14.5px; font-weight: 500; margin-left: auto; margin-right: 8px; }
-  nav.links a { position: relative; text-decoration: none; color: var(--ink-soft); transition: color 0.15s ease; padding-bottom: 3px; }
-  nav.links a::after {
-    content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px;
-    background: var(--accent); transition: right 0.25s cubic-bezier(0.16,1,0.3,1);
-  }
-  nav.links a:hover { color: var(--ink); }
-  nav.links a:hover::after { right: 0; }
-
-  .nav-right { display: flex; align-items: center; gap: 10px; }
-
-  .theme-toggle {
-    width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line);
-    background: var(--bg-raised); color: var(--ink); cursor: pointer;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    transition: border-color 0.15s ease, transform 0.15s ease;
-    position: relative; overflow: hidden;
-  }
-  .theme-toggle:hover { border-color: var(--ink-soft); }
-  .theme-toggle:active { transform: scale(0.92); }
-  .theme-toggle i { position: absolute; font-size: 17px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease; }
-  .theme-toggle .ph-sun-dim { opacity: 0; transform: rotate(-90deg) scale(0.5); }
-  .theme-toggle .ph-moon { opacity: 1; transform: rotate(0) scale(1); }
-  :root[data-theme="dark"] .theme-toggle .ph-sun-dim { opacity: 1; transform: rotate(0) scale(1); }
-  :root[data-theme="dark"] .theme-toggle .ph-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-body); font-weight: 700; font-size: 14px;
-    padding: 11px 22px; border-radius: 999px; border: 1px solid transparent;
-    cursor: pointer; text-decoration: none; white-space: nowrap;
-    transition: transform 0.2s cubic-bezier(0.16,1,0.3,1), background 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
-    position: relative;
-  }
-  .btn-primary { background: var(--accent); color: var(--on-accent); }
-  .btn-primary:hover { background: var(--accent-strong); box-shadow: 0 8px 24px -8px var(--accent-line); }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-  .btn-ghost:hover { border-color: var(--ink-soft); }
-  .btn:active { transform: scale(0.97) !important; }
-
-  /* -------------------- Hero -------------------- */
-  .hero { padding: 64px 0 88px; overflow: hidden; }
-  .hero-inner { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
-  h1 {
-    font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5.4vw, 58px);
-    line-height: 1.08; letter-spacing: -0.005em; max-width: 15ch;
-  }
-  h1 .accent { color: var(--accent); }
-  .hero-sub { margin-top: 22px; font-size: 17.5px; color: var(--ink-soft); max-width: 44ch; line-height: 1.6; }
-  .hero-ctas { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
-
-  /* -------------------- Hero graphic: growth mark -------------------- */
-  .hero-visual { position: relative; aspect-ratio: 1 / 1; max-width: 480px; margin: 0 auto; will-change: transform; }
-  .hero-visual svg { width: 100%; height: 100%; }
-  .hero-visual .ring { stroke: var(--line); transition: stroke 0.35s ease; }
-  .float-card {
-    position: absolute;
-    background: var(--bg-raised); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 14px 16px;
-    box-shadow: 0 20px 50px -20px var(--shadow);
-    opacity: 0; transform: translateY(10px);
-    animation: floatIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
-    transition: background 0.35s ease, border-color 0.35s ease;
-  }
-  .float-card .fc-lab { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
-  .float-card .fc-num { font-family: var(--font-mono); font-size: 19px; font-weight: 600; margin-top: 4px; color: var(--ink); }
-  .float-card .fc-num.pos { color: var(--accent); }
-  .fc-1 { top: 8%; left: -4%; animation-delay: 0.2s; }
-  .fc-2 { bottom: 12%; right: -6%; animation-delay: 0.5s; }
-  @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .growth-line { stroke-dasharray: 620; stroke-dashoffset: 620; animation: draw 1.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
-  }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-
-  /* -------------------- Section shell -------------------- */
-  section { padding: 84px 0; }
-  .section-head { max-width: 640px; margin-bottom: 44px; }
-  .kicker {
-    display: inline-block; font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--accent); margin-bottom: 14px;
-  }
-  h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.4vw, 36px); letter-spacing: -0.005em; line-height: 1.18; }
-  .section-sub { margin-top: 14px; font-size: 16px; color: var(--ink-soft); max-width: 54ch; }
-
-  /* -------------------- Problem: asymmetric bento -------------------- */
-  .problem { border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); background: var(--bg-raised); transition: background 0.35s ease, border-color 0.35s ease; }
-  .problem-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .p-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease, border-color 0.2s ease; }
-  .p-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -18px var(--shadow); border-color: var(--ink-faint); }
-  .p-card.big { background: linear-gradient(155deg, var(--bg-raised-2), var(--bg)); }
-  .p-card .p-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 14px; }
-  .p-card p { font-size: 15px; color: var(--ink-soft); }
-  .p-card strong { display: block; font-family: var(--font-display); font-size: 21px; font-weight: 600; color: var(--ink); margin-bottom: 10px; letter-spacing: 0; }
-
-  /* -------------------- Capability clusters -------------------- */
-  .cap-legend { display: flex; gap: 22px; margin-bottom: 36px; flex-wrap: wrap; }
-  .cap-legend-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
-  .dot { width: 7px; height: 7px; border-radius: 50%; }
-  .dot-live { background: var(--accent); box-shadow: 0 0 0 0 var(--accent-line); animation: pulseDot 2.2s ease-out infinite; }
-  .dot-soon { background: var(--ink-faint); }
-  @keyframes pulseDot {
-    0% { box-shadow: 0 0 0 0 var(--accent-line); }
-    70% { box-shadow: 0 0 0 6px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-
-  .cluster { margin-bottom: 44px; }
-  .cluster:last-child { margin-bottom: 0; }
-  .cluster-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 18px; letter-spacing: 0; }
-  .cluster-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-  .cap-card {
-    --mx: 50%; --my: 0%;
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
-    background: var(--bg-raised); display: flex; flex-direction: column; gap: 10px;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.2s ease, box-shadow 0.3s ease;
-  }
-  .cap-card::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
-    background: radial-gradient(220px circle at var(--mx) var(--my), var(--accent-soft), transparent 70%);
-    transition: opacity 0.3s ease;
-  }
-  .cap-card:hover { transform: translateY(-3px); border-color: var(--accent-line); box-shadow: 0 16px 34px -20px var(--shadow); }
-  .cap-card:hover::before { opacity: 1; }
-  .cap-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--accent-soft); border: 1px solid var(--accent-line); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 17px; flex-shrink: 0; }
-  .cap-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; }
-  .cap-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.55; flex-grow: 1; }
-  .cap-status {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em;
-    margin-top: 2px; white-space: nowrap;
-  }
-  .cap-status .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .status-live { color: var(--accent); }
-  .status-live .dot { background: var(--accent); animation: pulseDot 2.2s ease-out infinite; }
-  .status-soon { color: var(--ink-faint); }
-  .status-soon .dot { background: var(--ink-faint); border: 1px dashed var(--ink-faint); background: transparent; width: 5px; height: 5px; }
-
-  /* -------------------- How it works -------------------- */
-  .how { background: var(--bg-raised); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); transition: background 0.35s ease, border-color 0.35s ease; }
-  .step-row { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .step {
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;
-    background: var(--bg); display: flex; flex-direction: column; gap: 14px;
-    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
-  }
-  .step:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -20px var(--shadow); }
-  .step-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
-  .step h4 { font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: 0; }
-  .step p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.55; }
-
-  /* -------------------- Platforms bento -------------------- */
-  .plat-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
-  .plat-card {
-    border-radius: var(--radius); padding: 32px; min-height: 220px;
-    display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease;
-  }
-  .plat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px var(--shadow); }
-  .plat-card.mobile { background: linear-gradient(155deg, var(--bg-raised-2), var(--bg)); border: 1px solid var(--line); }
-  .plat-card.web { background: var(--accent); color: var(--on-accent); }
-  .plat-card .plat-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.65; }
-  .plat-card h4 { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: 0; }
-  .plat-card.mobile h4 { color: var(--ink); }
-  .plat-card p { font-size: 14.5px; max-width: 40ch; }
-  .plat-card.mobile p { color: var(--ink-soft); }
-  .plat-card.web p { color: color-mix(in srgb, var(--on-accent) 78%, transparent); }
-  .plat-icon { position: absolute; top: 28px; right: 28px; font-size: 30px; opacity: 0.5; }
-  .plat-card.mobile .plat-icon { color: var(--ink-soft); }
-  .plat-card.web .plat-icon { color: var(--on-accent); }
-
-  /* -------------------- App showcase: dark stage + phone rail -------------------- */
-  .showcase {
-    padding: 96px 0 80px;
-    background:
-      radial-gradient(ellipse 60% 55% at 22% 15%, rgba(63, 217, 134, 0.18), transparent 62%),
-      radial-gradient(ellipse 50% 45% at 85% 75%, rgba(63, 217, 134, 0.08), transparent 60%),
-      linear-gradient(180deg, #0A0D0A, #060706);
-    color: #EDF2EA;
-  }
-  .showcase .kicker { color: #7EEAB0; }
-  .showcase h2 { color: #F5F8F3; }
-  .showcase .section-sub { color: #A6B0A1; }
-  .phone-rail-outer { position: relative; }
-  .phone-rail-outer::before, .phone-rail-outer::after {
-    content: ''; position: absolute; top: 0; bottom: 0; width: 64px; z-index: 2; pointer-events: none;
-  }
-  .phone-rail-outer::before { left: 0; background: linear-gradient(to right, #060706, transparent); }
-  .phone-rail-outer::after { right: 0; background: linear-gradient(to left, #060706, transparent); }
-  .phone-rail {
-    display: flex; gap: 44px; overflow-x: auto; scroll-snap-type: x proximity;
-    padding: 46px 28px 22px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-  }
-  .phone-rail::-webkit-scrollbar { display: none; }
-  .phone-card {
-    scroll-snap-align: start; flex-shrink: 0; position: relative;
-    display: flex; flex-direction: column; align-items: center; gap: 16px;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-  .phone-card:hover { transform: translateY(-8px); }
-  .phone-frame {
-    width: 220px; aspect-ratio: 9 / 19.5; border-radius: 44px; flex-shrink: 0;
-    background: linear-gradient(155deg, #77797c, #2b2c2f 45%, #0e0f10);
-    padding: 8px; box-shadow: 0 30px 60px -22px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1);
-    position: relative;
-  }
-  .phone-frame::before {
-    content: ''; position: absolute; right: -3px; top: 108px; width: 3px; height: 64px;
-    background: #0e0f10; border-radius: 2px 0 0 2px;
-  }
-  .phone-frame::after {
-    content: ''; position: absolute; left: -3px; top: 88px; width: 3px; height: 42px;
-    background: #0e0f10; border-radius: 0 2px 2px 0;
-    box-shadow: 0 60px 0 0 #0e0f10;
-  }
-  .phone-screen {
-    width: 100%; height: 100%; border-radius: 37px; overflow: hidden;
-    background: #0B0B0D; position: relative;
-  }
-  .phone-screen img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-  .phone-notch {
-    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    width: 80px; height: 22px; border-radius: 999px; background: #0B0B0D; z-index: 3;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
-  }
-
-  /* -------------------- App mock screens (recreated UI) -------------------- */
-  .am {
-    width: 100%; height: 100%; background: #F7F3EA; color: #17140F;
-    font-family: var(--font-body); display: flex; flex-direction: column;
-    position: relative; overflow: hidden;
-  }
-  .am-status {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 16px 2px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; flex-shrink: 0;
-  }
-  .am-status .am-icons { display: flex; align-items: center; gap: 3px; font-size: 10px; }
-  .am-header {
-    padding: 8px 16px 6px; font-family: var(--font-display); font-weight: 700; font-size: 15px; flex-shrink: 0;
-  }
-  .am-header.center { text-align: center; position: relative; }
-  .am-header.center .am-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #17140F; }
-  .am-body { flex: 1; overflow: hidden; padding-bottom: 8px; }
-  .am-tabs { display: flex; gap: 5px; padding: 0 16px 8px; }
-  .am-tab {
-    font-family: var(--font-mono); font-size: 7.8px; font-weight: 600; padding: 5px 9px; border-radius: 999px;
-    border: 1px solid #E3DCC8; color: #6B6455; white-space: nowrap;
-  }
-  .am-tab.active { background: #17140F; color: #F7F3EA; border-color: #17140F; }
-  .am-card { background: #EFEAE0; border-radius: 10px; margin: 0 16px 10px; padding: 12px 13px; }
-  .am-card-lab { font-size: 8px; color: #8A8373; margin-bottom: 6px; }
-  .am-card-big { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
-  .am-card-sub { font-size: 7.5px; color: #8A8373; margin-top: 2px; }
-  .am-card-link { font-size: 8px; color: #1D4ED8; font-weight: 600; margin-top: 6px; }
-  .am-stat-row { display: flex; gap: 8px; padding: 0 16px 10px; }
-  .am-stat { flex: 1; border-radius: 10px; padding: 10px 12px; }
-  .am-stat.pos { background: #DCEFE0; color: #14603A; }
-  .am-stat.neg { background: #F6DEDA; color: #8A2E22; }
-  .am-stat-lab { font-size: 7.5px; opacity: 0.75; }
-  .am-stat-num { font-family: var(--font-display); font-weight: 700; font-size: 15px; margin-top: 2px; }
-  .am-line { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid #E2DCC8; font-size: 9px; }
-  .am-line:last-of-type { border-bottom: none; }
-  .am-line.total { font-weight: 700; padding-top: 8px; }
-  .am-line .am-l-lab { color: #4A4638; }
-  .am-line .am-l-sub { font-size: 7px; color: #9A947F; display: block; }
-  .am-pos { color: #1B8A4C; font-weight: 700; }
-  .am-neg { color: #B23A2E; font-weight: 700; }
-  .am-note { font-size: 6.8px; color: #9A947F; padding: 4px 16px 10px; line-height: 1.5; }
-  .am-btn { margin: 2px 16px 10px; padding: 10px; border-radius: 9px; text-align: center; font-size: 9px; font-weight: 700; }
-  .am-btn.black { background: #17140F; color: #F7F3EA; }
-  .am-btn.outline { border: 1px solid #D8D0BC; color: #17140F; }
-  .am-row {
-    display: flex; align-items: center; gap: 10px; margin: 0 16px 8px; padding: 10px 11px;
-    background: #EFEAE0; border-radius: 10px;
-  }
-  .am-row-icon {
-    width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-    font-size: 13px; flex-shrink: 0;
-  }
-  .am-row-body { flex: 1; min-width: 0; }
-  .am-row-title { font-size: 9px; font-weight: 700; }
-  .am-row-sub { font-size: 7.5px; color: #8A8373; margin-top: 1px; }
-  .am-row-amt { font-size: 10px; font-weight: 700; text-align: right; }
-  .am-badge { font-size: 6.5px; font-weight: 700; padding: 2px 6px; border-radius: 999px; margin-top: 2px; display: inline-block; }
-  .am-badge.paid { background: #DCEFE0; color: #14603A; }
-  .am-badge.overdue { color: #B23A2E; font-weight: 700; background: none; padding: 0; }
-  .am-badge.draft { background: #E9E4D8; color: #6B6455; }
-  .am-avatar {
-    width: 26px; height: 26px; border-radius: 50%; background: #1D3A8A; color: #fff;
-    display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: 700; flex-shrink: 0;
-  }
-  .am-plus {
-    position: absolute; top: 16px; right: 16px; width: 22px; height: 22px; border-radius: 6px;
-    background: #1D4ED8; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;
-  }
-  .am-trash { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #B23A2E; font-size: 13px; }
-  .am-banner { margin: 0 16px 10px; padding: 10px 11px; background: #DCE6F7; border-radius: 10px; display: flex; gap: 9px; align-items: flex-start; }
-  .am-banner-icon { width: 24px; height: 24px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
-  .am-banner-lab { font-size: 6.5px; font-weight: 700; color: #1D4ED8; letter-spacing: 0.03em; }
-  .am-banner-title { font-size: 9px; font-weight: 700; margin-top: 2px; }
-  .am-banner-sub { font-size: 7.5px; color: #5A6478; margin-top: 2px; }
-  .am-nav {
-    position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around;
-    padding: 8px 4px 10px; border-top: 1px solid #E2DCC8; background: #F7F3EA; flex-shrink: 0;
-  }
-  .am-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 6.3px; color: #9A947F; font-weight: 600; }
-  .am-nav-item.active { color: #17140F; }
-  .am-check { font-size: 7.5px; color: #1B8A4C; padding: 0 16px; line-height: 1.5; text-align: center; }
-  .phone-card figcaption {
-    font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em;
-    color: #8B958C;
-  }
-
-  /* Floating glass stat chips on the hero phone */
-  .glass-chip {
-    position: absolute; z-index: 4; pointer-events: none;
-    background: rgba(255,255,255,0.07); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; padding: 11px 14px;
-    box-shadow: 0 20px 44px -16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
-    opacity: 0; animation: chipIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
-  }
-  .glass-chip .gc-lab { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.55); }
-  .glass-chip .gc-num { font-family: var(--font-mono); font-size: 15px; font-weight: 600; margin-top: 3px; color: #fff; white-space: nowrap; }
-  .glass-chip.gc-1 { top: -32px; left: -30px; transform: rotate(-4deg); animation-delay: 0.3s; }
-  .glass-chip.gc-2 { bottom: -18px; right: -26px; transform: rotate(3deg); animation-delay: 0.5s; }
-  @keyframes chipIn { from { opacity: 0; transform: translateY(8px) rotate(var(--rot, 0deg)); } to { opacity: 1; } }
-
-  /* -------------------- CTA -------------------- */
-  .cta-box {
-    border: 1px solid var(--line); border-radius: 16px; padding: 52px 40px;
-    background: linear-gradient(160deg, var(--bg-raised), var(--bg));
-    position: relative; overflow: hidden;
-  }
-  .cta-inner { display: grid; grid-template-columns: 1fr; gap: 40px; }
-  .cta-copy h2 { margin-bottom: 14px; }
-  .cta-copy p { color: var(--ink-soft); font-size: 16px; max-width: 42ch; }
-  .cta-fine { margin-top: 20px; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); }
-  .cta-fine a { color: var(--accent); text-decoration: none; }
-
-  .cta-form { display: flex; flex-direction: column; gap: 12px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); }
-  .cta-form input, .cta-form textarea {
-    font-family: var(--font-body); font-size: 14.5px; padding: 12px 14px;
-    border: 1px solid var(--line); border-radius: 7px; background: var(--bg); color: var(--ink);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  }
-  .cta-form input::placeholder, .cta-form textarea::placeholder { color: var(--ink-faint); }
-  .cta-form input:focus, .cta-form textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-
-  /* -------------------- Footer -------------------- */
-  footer { border-top: 1px solid var(--line-soft); padding: 40px 0; }
-  .foot-inner { display: flex; flex-direction: column; gap: 18px; font-size: 13.5px; color: var(--ink-faint); }
-  .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .foot-brand { font-family: var(--font-display); font-size: 17px; color: var(--ink); font-weight: 600; }
-
-  /* -------------------- Reveal on scroll -------------------- */
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
-  .reveal.in { opacity: 1; transform: translateY(0); }
-
-  /* -------------------- Responsive -------------------- */
-  @media (min-width: 640px) {
-    .problem-grid { grid-template-columns: 1.2fr 1fr; }
-    .p-card.big { grid-row: span 2; }
-    .cluster-grid { grid-template-columns: repeat(2, 1fr); }
-    .step-row { grid-template-columns: repeat(3, 1fr); }
-    .plat-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (min-width: 780px) {
-    nav.links { display: flex; }
-    .hero-inner { grid-template-columns: 1.1fr 0.9fr; }
-    h1 { max-width: 13ch; }
-    .cta-inner { grid-template-columns: 1.1fr 1fr; }
-  }
-  @media (min-width: 980px) {
-    .cluster-grid { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-    .reveal { opacity: 1; transform: none; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMS — Accounting Made Simple | Visual Product Guide</title>
+  <meta name="description" content="Visual overview of AMS: AI Receipt OCR, Barcode POS, Master Owner PIN, Safe-to-Spend Radar, and Mobile + Web Workstations.">
+  <link rel="icon" href="images/app-icon.png">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0A0D14',
+            brandBlack: '#000000',
+            brandSurface: '#121620',
+            brandCard: '#181E2B',
+            brandBorder: '#232B3E',
+            brandEmerald: '#10B981',
+            brandEmeraldLight: '#34D399',
+            brandZinc: '#94A3B8'
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #000000;
+      color: #F8FAFC;
+    }
+    .emerald-gradient-text {
+      background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .phone-frame {
+      border: 8px solid #1E293B;
+      border-radius: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 50px rgba(16, 185, 129, 0.15);
+      overflow: hidden;
+      background: #000000;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .phone-frame:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.95), 0 0 60px rgba(16, 185, 129, 0.25);
+    }
+    .glass-panel {
+      background: rgba(18, 22, 32, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 60px rgba(16, 185, 129, 0.2);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body>
+<body class="bg-black text-slate-100 antialiased selection:bg-brandEmerald selection:text-black overflow-x-hidden">
 
-<header class="nav">
-  <div class="nav-inner">
-    <div class="brand">
-      <span class="brand-mark">A</span>
-      AMS
-    </div>
-    <nav class="links">
-      <a href="#platform">Platform</a>
-      <a href="#how">How it works</a>
-      <a href="#platforms">Where it runs</a>
-    </nav>
-    <div class="nav-right">
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
-        <i class="ph ph-moon"></i>
-        <i class="ph ph-sun-dim"></i>
-      </button>
-      <a href="#pitch" class="btn btn-primary magnetic">Get early access</a>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="wrap hero-inner">
-    <div>
-      <h1>The books, finally caught up with <span class="accent">the business.</span></h1>
-      <p class="hero-sub">Invoicing,Tax preparation, Inventory&Stock tracking, Customer tracking, Financial Insights, Cash-flow forecasting and real financial statements, and a live view for your accountant, running as one connected system instead of disconnected tools.</p>
-      <div class="hero-ctas">
-        <a href="#pitch" class="btn btn-primary magnetic">Get early access</a>
-        <a href="#platform" class="btn btn-ghost magnetic">See the platform</a>
-      </div>
-    </div>
-
-    <div class="hero-visual" id="hero-visual" aria-hidden="true">
-      <svg viewBox="0 0 400 400" fill="none">
-        <circle class="ring" cx="200" cy="200" r="170" stroke-width="1"/>
-        <circle class="ring" cx="200" cy="200" r="120" stroke-width="1"/>
-        <path class="growth-line" d="M 60 280 L 130 240 L 175 265 L 230 170 L 275 190 L 340 100"
-              stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="340" cy="100" r="6" fill="var(--accent)"/>
-      </svg>
-      <div class="float-card fc-1">
-        <div class="fc-lab">Net profit, Aug</div>
-        <div class="fc-num pos" data-count-to="3150" data-prefix="+">+0</div>
-      </div>
-      <div class="float-card fc-2">
-        <div class="fc-lab">Books status</div>
-        <div class="fc-num">Reconciled</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="problem">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Running a small business means running multiple systems at once</h2>
-      <p class="section-sub">Invoices in one place, the financial reports in another, Inventory left unchecked and outdated, lack of financial insights, taxes handled once a year in a panic, and no one but the owner actually understands any of it.</p>
-    </div>
-    <div class="problem-grid">
-      <div class="p-card big reveal">
-        <div class="p-num">01</div>
-        <strong>Only one person understands the books</strong>
-        <p>If the owner is the only one who can explain the numbers, the accountant is always working from a snapshot instead of the real thing. AMS puts owner, co-founder, and accountant on the same live ledger.</p>
-      </div>
-      <div class="p-card reveal">
-        <div class="p-num">02</div>
-        <strong>Invoices nobody's chasing</strong>
-        <p>Money owed to you sits unpaid because nothing is tracking who owes what, or since when.</p>
-      </div>
-      <div class="p-card reveal">
-        <div class="p-num">03</div>
-        <strong>No idea what's coming</strong>
-        <p>Revenue looks fine today. Whether there's enough cash for next month's rent is a different question entirely.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="platform">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="kicker">The platform</span>
-      <h2>Everything a growing business needs from its books</h2>
-      <p class="section-sub">Built in the open. Here's exactly what's running today, and what's shipping next.</p>
-    </div>
-
-    <div class="cap-legend reveal">
-      <div class="cap-legend-item"><span class="dot dot-live"></span>Live now</div>
-      <div class="cap-legend-item"><span class="dot dot-soon"></span>Coming soon</div>
-    </div>
-
-    <div class="cluster reveal">
-      <div class="cluster-title">Money in, tracked automatically</div>
-      <div class="cluster-grid">
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-receipt"></i></div>
-          <div class="cap-title">Invoicing &amp; payments</div>
-          <p class="cap-desc">Send invoices and let revenue log itself the moment a payment lands.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+  <!-- ======================================================== -->
+  <!-- TOP NAVIGATION BAR                                      -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-black text-black text-base shadow-xl group-hover:scale-105 transition">
+          AMS
         </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-bank"></i></div>
-          <div class="cap-title">Financial Insights</div>
-          <p class="cap-desc">Simplified reports and insights on how your business is doing</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
+        <div>
+          <span class="text-xl font-extrabold text-white tracking-tight">AMS</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-brandEmerald/20 text-brandEmeraldLight border border-brandEmerald/30">
+            Accounting Made Simple
+          </span>
         </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-users-three"></i></div>
-          <div class="cap-title">Customer payment tracking</div>
-          <p class="cap-desc">See who owes you, how much, and how overdue, at a glance.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-chart-line-up"></i></div>
-          <div class="cap-title">Cash-flow forecasting</div>
-          <p class="cap-desc">A projection built from real history, so gaps are visible before they happen.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-      </div>
-    </div>
+      </a>
 
-    <div class="cluster reveal">
-      <div class="cluster-title">The real numbers, always current</div>
-      <div class="cluster-grid">
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-chart-pie-slice"></i></div>
-          <div class="cap-title">Financial reports</div>
-          <p class="cap-desc">P&amp;L, balance sheet, and cash flow, generated for any date range.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-folder-simple"></i></div>
-          <div class="cap-title">Tax preparation</div>
-          <p class="cap-desc">Reports formatted well enough to hand straight to a preparer.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-clock-counter-clockwise"></i></div>
-          <div class="cap-title">Business history</div>
-          <p class="cap-desc">Every transaction, searchable back to day one.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-magnifying-glass"></i></div>
-          <div class="cap-title">Customer &amp; supplier insights</div>
-          <p class="cap-desc">Know your best customers and your biggest costs at a glance.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-      </div>
-    </div>
+      <!-- Quick Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+        <a href="#visual-tour" class="hover:text-white transition">Visual Walkthrough</a>
+        <a href="#how-it-works" class="hover:text-white transition">How It Works</a>
+        <a href="#owner-security" class="hover:text-white transition">Owner PIN Security</a>
+        <a href="#dual-workstation" class="hover:text-white transition">Web Companion</a>
+        <a href="#pricing" class="hover:text-white transition">Pricing</a>
+      </nav>
 
-    <div class="cluster reveal">
-      <div class="cluster-title">Room for the whole team</div>
-      <div class="cluster-grid">
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-user-plus"></i></div>
-          <div class="cap-title">Multiple users</div>
-          <p class="cap-desc">Invite a bookkeeper or accountant into the same live books.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-squares-four"></i></div>
-          <div class="cap-title">Accountant dashboard</div>
-          <p class="cap-desc">A dedicated view for the person who reconciles the books.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
-        <div class="cap-card">
-          <div class="cap-icon"><i class="ph ph-package"></i></div>
-          <div class="cap-title">Inventory &amp; profit tracking</div>
-          <p class="cap-desc">Track stock alongside true margin per product.</p>
-          <div class="cap-status status-live"><span class="dot"></span>Live now</div>
-        </div>
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition">
+          <span>💻 Web Workstation</span>
+        </a>
+        <a href="#downloads" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/20 transition transform hover:-translate-y-0.5">
+          <span>Download App</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </a>
       </div>
-    </div>
-  </div>
-</section>
 
-<section id="how" class="how">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Three steps, in this order</h2>
     </div>
-    <div class="step-row">
-      <div class="step reveal">
-        <span class="step-num">01</span>
-        <h4>Everything lands in one place</h4>
-        <p>Invoices sent, expenses logged, live cash and bank balance based on cash/bank transactions. All of it flows into a single ledger instead of five separate tools.</p>
-      </div>
-      <div class="step reveal">
-        <span class="step-num">02</span>
-        <h4>The system does the accounting</h4>
-        <p>Entries get categorized, invoices get tracked to paid or overdue, Every transaction is accounted for in the reports and the numbers stay current without a monthly close.</p>
-      </div>
-      <div class="step reveal">
-        <span class="step-num">03</span>
-        <h4>Everyone who needs it, sees it</h4>
-        <p>The owner, a co-founder, and an accountant look at the same real numbers, reports and all, at the same time.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </header>
 
-<section id="platforms">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>One set of books, two ways in</h2>
-      <p class="section-sub">The same account, the same numbers, whether you're on the move or sitting down to close out the week.</p>
-    </div>
-    <div class="plat-grid">
-      <div class="plat-card mobile reveal">
-        <i class="ph ph-device-mobile plat-icon"></i>
-        <span class="plat-label">iOS &amp; Android</span>
-        <h4>The mobile app</h4>
-        <p>Built for the moment something happens. An invoice goes out, financial reports, OCR for capturing of receipts and other financial documents,when a payment comes in.</p>
-      </div>
-      <div class="plat-card web reveal">
-        <i class="ph ph-desktop plat-icon"></i>
-        <span class="plat-label">Web</span>
-        <h4>The companion website</h4>
-        <p>Built for the sit-down work: batch entry, reviewing reports, and the view your accountant will actually use.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section id="app" class="showcase">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="kicker">Inside the app</span>
-      <h2>Every screen built for the way you actually run the shop</h2>
-      <p class="section-sub">Invoicing, bank sync, tax prep, and the real numbers, all live on your phone.</p>
+  <!-- ======================================================== -->
+  <!-- HERO SECTION                                             -->
+  <!-- ======================================================== -->
+  <section id="hero" class="relative pt-12 pb-24 overflow-hidden">
+    <!-- Ambient glow gradient -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-brandEmerald/15 blur-[140px] pointer-events-none rounded-full"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <!-- Trust Pill -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-slate-300 mb-6 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-brandEmerald animate-ping"></span>
+        Built for Modern Retail, Wholesale, Pharmacies & Service Businesses
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight max-w-5xl mx-auto leading-[1.1] mb-6">
+        See Everything <span class="emerald-gradient-text">AMS</span> Does in Pictures.
+      </h1>
+
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto font-medium mb-10 leading-relaxed">
+        No confusing double-entry accounting words. Snap supplier receipts, scan product barcodes, restrict cashier views with a Master PIN, and see your exact daily profits in Cedis (GHS) instantly.
+      </p>
+
+      <!-- Main CTAs -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+        <a href="https://expo.dev/accounts/ams-accounting-made-simple/projects/leoderksen/builds/b979eb2a-2857-45a3-be21-78c3b79b4eec" target="_blank" class="flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-xl shadow-brandEmerald/25 transition transform hover:scale-105">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.156-.2702.0634-.6153-.2068-.7713-.269-.156-.6142-.0634-.7702.2068l-2.0234 3.5046c-1.4646-.6692-3.097-1.0478-4.8771-1.0478s-3.4125.3786-4.8771 1.0478L5.1035 5.3001c-.156-.2702-.5012-.3628-.7702-.2068-.2702.156-.3628.5011-.2068.7713l1.996 3.4572C2.658 11.2334.3418 14.8693 0 19.1672h24c-.3418-4.2979-2.658-7.9338-6.1185-9.8458"/></svg>
+          <span>Download Android APK</span>
+        </a>
+
+        <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-white bg-white/10 hover:bg-white/15 border border-white/15 transition transform hover:scale-105">
+          <span>Launch Web Companion 💻</span>
+        </a>
+      </div>
+
+      <!-- HERO VISUAL: 3 LIVE APP SCREENS (UPDATED) -->
+      <div class="relative max-w-5xl mx-auto pt-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          
+          <!-- Screen 1: Fast Entry / Receipt OCR -->
+          <div class="phone-frame transform md:-rotate-2 md:translate-y-4">
+            <div class="bg-slate-900 px-4 py-2.5 text-[10px] font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>📸 AI Receipt OCR</span>
+              <span class="text-brandEmerald">LIVE APP</span>
+            </div>
+            <img src="images/screen-capture.jpg" alt="AMS Fast Entry and OCR" class="w-full h-auto object-cover">
+          </div>
+
+          <!-- Screen 2: Real Balance Sheet & Reports (Center Hero - User Replacement 1) -->
+          <div class="phone-frame md:scale-105 z-30 glow-emerald">
+            <div class="bg-slate-900 px-4 py-2.5 text-[10px] font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>👑 Balance Sheet & Equity</span>
+              <span class="text-brandEmerald">● PDF READY</span>
+            </div>
+            <img src="images/screen-reports.jpg" alt="AMS Financial Statements & Balance Sheet" class="w-full h-auto object-cover">
+          </div>
+
+          <!-- Screen 3: Real Clean Live Ledger (User Replacement 2) -->
+          <div class="phone-frame transform md:rotate-2 md:translate-y-4">
+            <div class="bg-slate-900 px-4 py-2.5 text-[10px] font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>📋 Auto Ledger & Cash Flow</span>
+              <span class="text-brandEmerald">REAL-TIME</span>
+            </div>
+            <img src="images/screen-ledger.jpg" alt="AMS Real-Time Ledger" class="w-full h-auto object-cover">
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-  </div>
-  <div class="phone-rail-outer reveal">
-    <div class="phone-rail">
-      <figure class="phone-card">
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="am" role="img" aria-label="Home screen for leo bakery showing total revenue, outstanding balance, and quick links to invoicing, tax prep, customers, and inventory">
-              <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-              <div class="am-header">Good afternoon<br><span style="font-size:17px;">leo bakery</span></div>
-              <div class="am-body">
-                <div class="am-stat-row">
-                  <div class="am-stat pos"><div class="am-stat-lab">Total revenue</div><div class="am-stat-num">5,000</div></div>
-                  <div class="am-stat neg"><div class="am-stat-lab">Outstanding</div><div class="am-stat-num">0</div></div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- HOW IT WORKS IN 3 STEPS                                  -->
+  <!-- ======================================================== -->
+  <section id="how-it-works" class="py-20 bg-brandSurface/40 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          How It Works
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mt-4 tracking-tight">
+          Bookkeeping in 3 Simple Steps.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Step 1 -->
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-brandEmerald/20 text-brandEmerald font-black text-xl flex items-center justify-center mb-6">
+            1
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Snap Receipt or Scan Barcode</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Take a photo of any vendor receipt, paste a MoMo SMS alert, or scan a product barcode with your phone camera.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 font-black text-xl flex items-center justify-center mb-6">
+            2
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">AI Auto-Classifies Everything</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            AMS automatically extracts the vendor, date, and amount (GHS), deducts inventory stock, and logs it to your ledger.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 font-black text-xl flex items-center justify-center mb-6">
+            3
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Check Balance Sheet & Profits</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Instantly view your net profit, total business equity, and export 1-tap PDF balance sheets for banks or CPAs.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- VISUAL TOUR: DETAILED CAPABILITIES WITH LIVE SCREENSHOTS -->
+  <!-- ======================================================== -->
+  <section id="visual-tour" class="py-24 bg-black border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-20">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          Visual Feature Guide
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">
+          Every Core Capability Explained by Image.
+        </h2>
+      </div>
+
+      <!-- CAPABILITY 1: AI RECEIPT OCR & MOMO ENTRY -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <div class="w-12 h-12 rounded-2xl bg-brandEmerald/20 border border-brandEmerald/30 flex items-center justify-center text-2xl text-brandEmerald">
+            📸
+          </div>
+          <h3 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            1. Instant AI Receipt OCR & MoMo SMS Reader
+          </h3>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Never type receipts or calculate supplier totals manually again.
+          </p>
+          
+          <div class="space-y-3 pt-2">
+            <div class="glass-panel p-4 rounded-xl flex items-start gap-3">
+              <span class="text-brandEmerald font-bold text-lg">✓</span>
+              <div>
+                <p class="text-sm font-bold text-white">Auto-Extracts Vendor & Amount</p>
+                <p class="text-xs text-slate-400">Instantly reads "Total Energies GHS 250" or "Melcom GHS 1,420" directly from photo.</p>
+              </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl flex items-start gap-3">
+              <span class="text-brandEmerald font-bold text-lg">✓</span>
+              <div>
+                <p class="text-sm font-bold text-white">Auto Restock Item Extraction</p>
+                <p class="text-xs text-slate-400">Snapping a bulk wholesale invoice automatically creates itemized inventory entries (Rice, Oil, Drinks).</p>
+              </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl flex items-start gap-3">
+              <span class="text-brandEmerald font-bold text-lg">✓</span>
+              <div>
+                <p class="text-sm font-bold text-white">Paste MoMo SMS Alert</p>
+                <p class="text-xs text-slate-400">Copy any MTN MoMo / Telecel transaction SMS and AMS logs the customer payment in 1 tap.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 flex justify-center">
+          <div class="phone-frame max-w-sm w-full glow-emerald">
+            <div class="bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>Capture Screen (Actual App)</span>
+              <span class="text-brandEmerald">AI Enabled</span>
+            </div>
+            <img src="images/screen-capture.jpg" alt="Capture and Fast Entry" class="w-full h-auto object-cover">
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- CAPABILITY 2: MASTER OWNER PIN & STAFF ROLES (User Replacement 3) -->
+      <div id="owner-security" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
+        
+        <div class="lg:col-span-6 lg:order-2 space-y-6">
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-2xl">
+            👑
+          </div>
+          <h3 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            2. Master Owner PIN & Staff Role Control
+          </h3>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Your cashiers use the phone for daily sales, but they are strictly blocked from seeing your business profits, bank accounts, or team records.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-l-purple-500">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-purple-400">🧑‍💼 Employee / Cashier Mode</span>
+              <p class="text-sm font-bold text-white mt-1">Limited POS View</p>
+              <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                <li>• Record daily customer sales</li>
+                <li>• Barcode product lookup</li>
+                <li>• Snap restock invoices</li>
+                <li>🔒 <span class="text-red-400">Profits & Bank info HIDDEN</span></li>
+              </ul>
+            </div>
+
+            <div class="glass-panel p-4 rounded-2xl border-l-4 border-l-brandEmerald">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-brandEmerald">👑 Master Owner Mode</span>
+              <p class="text-sm font-bold text-white mt-1">Unlocked with PIN</p>
+              <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                <li>• Live Role Preview Switcher</li>
+                <li>• Add/Manage Team Members</li>
+                <li>• Export General Ledger CSVs</li>
+                <li>• Bank & MoMo Details</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="p-4 rounded-xl bg-purple-950/40 border border-purple-800/40 text-xs text-purple-200">
+            <strong>🔒 Security Guarantee:</strong> Non-owners are strictly locked out of the Staff Management directory and owner equity settings.
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 lg:order-1 flex justify-center">
+          <div class="phone-frame max-w-sm w-full">
+            <div class="bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>Staff & Role Controls</span>
+              <span class="text-purple-400">👑 Master PIN</span>
+            </div>
+            <img src="images/screen-owner-roles.jpg" alt="Staff & Multi-User Roles Screen" class="w-full h-auto object-cover">
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- CAPABILITY 3: REAL-TIME LEDGER & OUTFLOW TRACKING (User Replacement 2) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <div class="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-2xl">
+            📋
+          </div>
+          <h3 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            3. Real-Time Auto Ledger & Outflow Stream
+          </h3>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Every transaction is categorized with clear green/red totals (+GHS 780 for sales, -GHS 25.50 for cables, -GHS 50,000 for capital assets).
+          </p>
+
+          <div class="space-y-3 pt-2">
+            <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+              <div>
+                <p class="text-sm font-bold text-white">Itemized Inventory Sales</p>
+                <p class="text-xs text-slate-400">e.g. Sale: Brooms (x30) · Revenue</p>
+              </div>
+              <span class="text-brandEmerald font-black text-base">+GHS 780.00</span>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+              <div>
+                <p class="text-sm font-bold text-white">Current Asset / Supplier Purchase</p>
+                <p class="text-xs text-slate-400">e.g. Wireless Mouse Restock</p>
+              </div>
+              <span class="text-red-400 font-black text-base">-GHS 39.98</span>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+              <div>
+                <p class="text-sm font-bold text-white">Fixed Asset & Capital Inflow</p>
+                <p class="text-xs text-slate-400">e.g. Land, Equipment, Shop Renovation</p>
+              </div>
+              <span class="text-slate-300 font-black text-base">-GHS 50,000.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 flex justify-center">
+          <div class="phone-frame max-w-sm w-full glow-emerald">
+            <div class="bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 flex items-center justify-between border-b border-white/10">
+              <span>Live Ledger Screen</span>
+              <span class="text-brandEmerald">Filterable</span>
+            </div>
+            <img src="images/screen-ledger.jpg" alt="Real Ledger Screen" class="w-full h-auto object-cover">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- DUAL WORKSTATION: PHONE + DESKTOP                       -->
+  <!-- ======================================================== -->
+  <section id="dual-workstation" class="py-24 bg-brandSurface/40 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          Dual Hybrid Platform
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">
+          Mobile on the Go. Desktop on Your PC.
+        </h2>
+        <p class="text-slate-400 mt-4 text-base sm:text-lg">
+          Use the mobile app on your phone while walking the shop floor, and open the web companion on your laptop for rapid spreadsheet-style entries and accountant audits.
+        </p>
+      </div>
+
+      <!-- Desktop + Mobile Showcase Container -->
+      <div class="glass-panel p-6 sm:p-10 rounded-3xl border border-white/10 relative">
+        
+        <div class="flex flex-col lg:flex-row items-center gap-8">
+          
+          <!-- Left side: Laptop View Simulation -->
+          <div class="flex-1 w-full bg-slate-950 rounded-2xl border border-slate-800 p-4 shadow-2xl">
+            <!-- Browser Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+              </div>
+              <div class="px-2 sm:px-4 py-1 rounded-md bg-slate-900 border border-slate-700 text-[10px] sm:text-[11px] text-slate-300 font-mono truncate max-w-[180px] sm:max-w-none">
+                https://ams-qlptadw2j-fms11.vercel.app/dashboard
+              </div>
+              <span class="text-xs text-brandEmerald font-bold">● LIVE</span>
+            </div>
+
+            <!-- Simulated Desktop Dashboard -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">Monthly Revenue</p>
+                <p class="text-lg font-black text-brandEmerald">GHS 190,281.98</p>
+              </div>
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">Tax Schedule</p>
+                <p class="text-lg font-black text-amber-400">GRA Flat Rate</p>
+              </div>
+              <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">Staff Logged In</p>
+                <p class="text-lg font-black text-purple-400">3 Active</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/70 p-4 rounded-xl border border-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-bold text-white">Recent Transactions & Audit Trail</p>
+                <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="text-xs text-brandEmerald hover:underline font-bold">Launch Full Workstation →</a>
+              </div>
+              <div class="text-xs text-slate-400 space-y-2">
+                <div class="flex justify-between py-1 border-b border-slate-800/60">
+                  <span>Sale: Brooms (x30)</span>
+                  <span class="text-brandEmerald font-bold">+GHS 780.00</span>
                 </div>
-                <div class="am-btn black">+ Add entry</div>
-                <div class="am-banner">
-                  <div class="am-banner-icon"><i class="ph ph-squares-four"></i></div>
-                  <div>
-                    <div class="am-banner-lab">RECOMMENDED</div>
-                    <div class="am-banner-title">Import a day's entries on the web</div>
-                    <div class="am-banner-sub">Faster spreadsheet-style entry for batches.</div>
-                  </div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60">
+                  <span>Supplier: USB-C Cables Restock</span>
+                  <span class="text-red-400 font-bold">-GHS 25.50</span>
                 </div>
-                <div class="am-row"><div class="am-row-icon" style="background:#DCE6F7;color:#1D4ED8;"><i class="ph ph-file-text"></i></div><div class="am-row-body"><div class="am-row-title">Invoicing and payments</div><div class="am-row-sub">Create your first invoice</div></div></div>
-                <div class="am-row"><div class="am-row-icon" style="background:#F7E9D2;color:#8A5A1E;"><i class="ph ph-calculator"></i></div><div class="am-row-body"><div class="am-row-title">Tax preparation</div><div class="am-row-sub">Set up your filing schedule</div></div></div>
-              </div>
-              <div class="am-nav">
-                <div class="am-nav-item active"><i class="ph-fill ph-house"></i>Home</div>
-                <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
-                <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
-                <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
-                <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
+                <div class="flex justify-between py-1">
+                  <span>Sale: Wireless Mouse (x1)</span>
+                  <span class="text-brandEmerald font-bold">+GHS 25.99</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="glass-chip gc-1" aria-hidden="true"><div class="gc-lab">Total revenue</div><div class="gc-num">GHS 5,000</div></div>
-          <div class="glass-chip gc-2" aria-hidden="true"><div class="gc-lab">Outstanding</div><div class="gc-num">GHS 0</div></div>
+
+          <!-- Right side: Description & Action -->
+          <div class="lg:w-80 space-y-4 text-left">
+            <h4 class="text-2xl font-bold text-white">Full Keyboard & Mouse Power</h4>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Export CSV backups, print customer invoices, file GRA quarterly taxes, and assign accountant access in seconds.
+            </p>
+            <div class="pt-2">
+              <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-extrabold text-black bg-white hover:bg-slate-200 transition">
+                <span>Open Web Workstation</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+
         </div>
-        <figcaption>Home</figcaption>
-      </figure>
 
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Ledger screen listing recent revenue, cost of goods, operating expense, liability, and asset entries">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Ledger</div>
-            <div class="am-tabs"><span class="am-tab active">All</span><span class="am-tab">Revenue</span><span class="am-tab">Cost of goods</span><span class="am-tab">Op. expense</span></div>
-            <div class="am-body">
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Sales service<span class="am-l-sub">Revenue</span></span><span class="am-pos">+5,000</span></div>
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Equipments<span class="am-l-sub">Cost of goods</span></span><span class="am-neg">-700</span></div>
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Rent<span class="am-l-sub">Operating expense</span></span><span class="am-neg">-860</span></div>
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Loan<span class="am-l-sub">Liability</span></span><span class="am-neg">-7,000</span></div>
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Current Asset<span class="am-l-sub">Asset</span></span><span class="am-neg">-14,000</span></div>
-              <div class="am-line" style="padding:8px 16px;"><span class="am-l-lab">Mr Opong<span class="am-l-sub">Revenue</span></span><span class="am-pos">+6,589.56</span></div>
-            </div>
-            <div class="am-nav">
-              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
-              <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
-              <div class="am-nav-item active"><i class="ph-fill ph-list-bullets"></i>Ledger</div>
-              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
-              <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Ledger</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Capture screen for uploading an invoice or receipt PDF">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Capture</div>
-            <div class="am-body" style="display:flex; flex-direction:column; align-items:center; padding-top:18px;">
-              <div style="width:calc(100% - 32px); border:1.5px dashed #D8D0BC; border-radius:12px; padding:34px 12px; text-align:center; color:#9A947F;">
-                <i class="ph ph-file-text" style="font-size:26px;"></i>
-                <div style="font-size:8.5px; margin-top:10px;">Upload an invoice or receipt PDF</div>
-              </div>
-              <div class="am-btn black" style="width:calc(100% - 32px); margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-upload-simple"></i>Upload PDF</div>
-            </div>
-            <div class="am-nav">
-              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
-              <div class="am-nav-item active"><i class="ph-fill ph-camera"></i>Capture</div>
-              <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
-              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
-              <div class="am-nav-item"><i class="ph ph-gear"></i>Settings</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Capture</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Invoices list showing draft, paid, and overdue invoices">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header center">Invoices<span class="am-plus"><i class="ph-bold ph-plus"></i></span></div>
-            <div class="am-tabs"><span class="am-tab active">All</span><span class="am-tab">Paid</span><span class="am-tab">Overdue</span><span class="am-tab">Draft</span></div>
-            <div class="am-body">
-              <div class="am-row"><div class="am-avatar" style="background:#2E4EA6;">MK</div><div class="am-row-body"><div class="am-row-title">Mrs Kotei</div><div class="am-row-sub">INV-0002 &middot; Not sent</div></div><div class="am-row-amt">850<div class="am-badge draft">DRAFT</div></div></div>
-              <div class="am-row"><div class="am-avatar" style="background:#2E4EA6;">MO</div><div class="am-row-body"><div class="am-row-title">Mr Opong</div><div class="am-row-sub">INV-0001 &middot; Paid Aug 13</div></div><div class="am-row-amt">6,589.56<div class="am-badge paid">PAID</div></div></div>
-              <div class="am-row"><div class="am-avatar" style="background:#6B6455;">R</div><div class="am-row-body"><div class="am-row-title">Richard</div><div class="am-row-sub">INV-0003 &middot; Due Aug 12</div></div><div class="am-row-amt">678<div class="am-badge overdue">OVERDUE</div></div></div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Invoices</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Invoice detail for Mr Opong showing amount paid and description">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header center">INV-0001<span class="am-trash"><i class="ph ph-trash"></i></span></div>
-            <div class="am-body">
-              <div class="am-card">
-                <div style="font-family:var(--font-display); font-weight:700; font-size:11px;">Mr Opong</div>
-                <div style="font-size:7.5px; color:#8A8373; margin-bottom:8px;">oppongernest@gmail.com</div>
-                <div class="am-card-big" style="font-size:20px;">6,589.56</div>
-              </div>
-              <div class="am-card">
-                <div class="am-line"><span class="am-l-lab">Due date</span><span>August 27, 2026</span></div>
-                <div class="am-line"><span class="am-l-lab">Paid on</span><span>August 13, 2026</span></div>
-                <div class="am-line"><span class="am-l-lab">Description</span><span>Credit sales</span></div>
-              </div>
-              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-share-network"></i>Share invoice</div>
-              <div class="am-check"><i class="ph-bold ph-check"></i> This invoice is paid. A matching revenue entry was added to your ledger automatically.</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Invoice</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Profit and loss report for August showing revenue, cost of goods, operating expenses, and net profit">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Reports</div>
-            <div class="am-tabs"><span class="am-tab active">P&amp;L</span><span class="am-tab">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab">Trial balance</span></div>
-            <div class="am-body">
-              <div class="am-card">
-                <div class="am-card-lab">Profit &amp; loss &middot; August</div>
-                <div class="am-line"><span class="am-l-lab">Revenue</span><span>11,589.56</span></div>
-                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span>700</span></div>
-                <div class="am-line"><span class="am-l-lab">Operating expenses</span><span>860</span></div>
-                <div class="am-line total"><span class="am-l-lab">Net profit</span><span class="am-pos">10,029.56</span></div>
-              </div>
-              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-download-simple"></i>Export PDF</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>P&amp;L</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Balance sheet report showing total assets, liabilities, and equity">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Reports</div>
-            <div class="am-tabs"><span class="am-tab">P&amp;L</span><span class="am-tab active">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab">Trial balance</span></div>
-            <div class="am-body">
-              <div class="am-card">
-                <div class="am-card-lab">Balance sheet &middot; as of today</div>
-                <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; margin:4px 0 2px;">Assets</div>
-                <div class="am-line"><span class="am-l-lab">Cash</span><span>3,029.56</span></div>
-                <div class="am-line"><span class="am-l-lab">Fixed assets</span><span>14,000</span></div>
-                <div class="am-line total"><span class="am-l-lab">Total assets</span><span class="am-pos">17,029.56</span></div>
-                <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; margin:8px 0 2px;">Liabilities &amp; equity</div>
-                <div class="am-line"><span class="am-l-lab">Total liabilities</span><span>7,000</span></div>
-                <div class="am-line"><span class="am-l-lab">Equity</span><span>10,029.56</span></div>
-                <div class="am-line total"><span class="am-l-lab">Total liab. + equity</span><span>17,029.56</span></div>
-              </div>
-              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-download-simple"></i>Export PDF</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Balance sheet</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Trial balance report showing debit and credit totals by category">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Reports</div>
-            <div class="am-tabs"><span class="am-tab">P&amp;L</span><span class="am-tab">Balance sheet</span><span class="am-tab">Cash flow</span><span class="am-tab active">Trial balance</span></div>
-            <div class="am-body">
-              <div class="am-card">
-                <div class="am-card-lab">Trial balance &middot; August</div>
-                <div class="am-line" style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.03em;"><span>Category</span><span style="display:flex; gap:14px;"><span>Debit</span><span>Credit</span></span></div>
-                <div class="am-line"><span class="am-l-lab">Revenue</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>&mdash;</span><span>11,589.56</span></span></div>
-                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>700</span><span>&mdash;</span></span></div>
-                <div class="am-line"><span class="am-l-lab">Operating expense</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>860</span><span>&mdash;</span></span></div>
-                <div class="am-line"><span class="am-l-lab">Asset purchases</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>14,000</span><span>&mdash;</span></span></div>
-                <div class="am-line"><span class="am-l-lab">Liabilities</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>&mdash;</span><span>7,000</span></span></div>
-                <div class="am-line total"><span class="am-l-lab">Totals</span><span style="display:flex; gap:14px; min-width:70px; justify-content:flex-end;"><span>15,560</span><span>18,589.56</span></span></div>
-              </div>
-              <div class="am-note">This is a category summary, not a formal double-entry trial balance. The difference reflects net profit and financing activity for the period.</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Trial balance</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Tax preparation screen showing next filing date, filing period, and net taxable income">
-            <div class="am-status"><span>9:41</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header center"><span class="am-back"><i class="ph ph-caret-left"></i></span>Tax preparation</div>
-            <div class="am-body">
-              <div class="am-card">
-                <div class="am-card-lab">Next filing</div>
-                <div class="am-card-big">August 13, 2027</div>
-                <div class="am-card-sub">365 days away &middot; Filing annually</div>
-                <div class="am-card-link">Edit filing schedule</div>
-              </div>
-              <div class="am-tabs"><span class="am-tab active">This month</span><span class="am-tab">This quarter</span><span class="am-tab">This year</span></div>
-              <div class="am-card">
-                <div class="am-card-lab">Tax summary &middot; August 2026</div>
-                <div class="am-line"><span class="am-l-lab">Income</span><span>11,589.56</span></div>
-                <div class="am-line"><span class="am-l-lab">Cost of goods</span><span>-700</span></div>
-                <div class="am-line"><span class="am-l-lab">Operating expenses</span><span>-860</span></div>
-                <div class="am-line total"><span class="am-l-lab">Net taxable income</span><span class="am-pos">10,029.56</span></div>
-              </div>
-              <div class="am-btn outline" style="display:flex; align-items:center; justify-content:center; gap:6px;"><i class="ph ph-share-network"></i>Share summary</div>
-              <div class="am-note">Reference only, does not calculate tax owed. Confirm everything with a licensed tax preparer before filing.</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Tax prep</figcaption>
-      </figure>
-
-      <figure class="phone-card">
-        <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen">
-          <div class="am" role="img" aria-label="Settings screen showing business details, account email, data export, and support">
-            <div class="am-status"><span>9:43</span><span class="am-icons"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
-            <div class="am-header">Settings</div>
-            <div class="am-body">
-              <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; padding:0 16px 4px;">Business</div>
-              <div class="am-card">
-                <div class="am-line"><span class="am-l-lab">Name</span><span>leo bakery</span></div>
-                <div class="am-line"><span class="am-l-lab">Industry</span><span>Food and beverage</span></div>
-                <div class="am-line"><span class="am-l-lab">Currency</span><span>GHS</span></div>
-                <div class="am-card-link">Edit business details</div>
-              </div>
-              <div style="font-size:7px; color:#9A947F; text-transform:uppercase; letter-spacing:.04em; padding:0 16px 4px;">Account</div>
-              <div class="am-card" style="padding-bottom:2px;">
-                <div class="am-line"><span class="am-l-lab">Email</span><span style="font-size:8px;">elioenailderksen@gmail.com</span></div>
-                <div class="am-line" style="color:#B23A2E; font-weight:700;"><span>Sign out</span><i class="ph ph-sign-out"></i></div>
-              </div>
-            </div>
-            <div class="am-nav">
-              <div class="am-nav-item"><i class="ph ph-house"></i>Home</div>
-              <div class="am-nav-item"><i class="ph ph-camera"></i>Capture</div>
-              <div class="am-nav-item"><i class="ph ph-list-bullets"></i>Ledger</div>
-              <div class="am-nav-item"><i class="ph ph-chart-bar"></i>Reports</div>
-              <div class="am-nav-item active"><i class="ph-fill ph-gear"></i>Settings</div>
-            </div>
-          </div>
-        </div></div>
-        <figcaption>Settings</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section id="pitch" class="cta">
-  <div class="wrap">
-    <div class="cta-box reveal">
-      <div class="cta-inner">
-        <div class="cta-copy">
-          <span class="kicker">Get in touch</span>
-          <h2>We're onboarding a small number of early businesses</h2>
-          <p>Tell us a bit about your business and what you're currently using to manage it. We'll follow up directly to set up a walkthrough.</p>
-          <p class="cta-fine">Or write directly to <a href="mailto:leokofiderksen@gmail.com">leokofiderksen@gmail.com</a></p>
-        </div>
-        <form class="cta-form" action="mailto:accmadesimple01@gmail.com" method="post" enctype="text/plain">
-          <div class="field">
-            <label for="name">Your name</label>
-            <input type="text" id="name" name="name" placeholder="Leo Derksen" required>
-          </div>
-          <div class="field">
-            <label for="business">Business name</label>
-            <input type="text" id="business" name="business" placeholder="AMS Organization" required>
-          </div>
-          <div class="field">
-            <label for="email">Email address</label>
-            <input type="email" id="email" name="email" placeholder="leokofiderksen@gmail.com" required>
-          </div>
-          <div class="field">
-            <label for="message">What are you using today</label>
-            <textarea id="message" name="message" rows="3" placeholder="Spreadsheets, a mix of apps, nothing yet..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary magnetic" style="margin-top:6px; width:fit-content;">Get early access</button>
-        </form>
       </div>
+
     </div>
-  </div>
-</section>
 
-<footer>
-  <div class="wrap foot-inner">
-    <div class="foot-top">
-      <span class="foot-brand">AMS</span>
-      <span>Accounting Made Simple</span>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- TRANSPARENT PRICING                                      -->
+  <!-- ======================================================== -->
+  <section id="pricing" class="py-24 bg-black border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          Simple Pricing
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mt-4 tracking-tight">
+          Start Free for 30 Days.
+        </h2>
+        <p class="text-slate-400 mt-4 text-base">
+          No credit card required upfront. Enjoy complete, unrestricted business access on registration.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+        
+        <!-- FREE TIER -->
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white">Starter Free</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">Basic</span>
+            </div>
+            <p class="text-3xl font-black text-white mb-2">GHS 0 <span class="text-xs font-normal text-slate-400">/ forever</span></p>
+            <p class="text-xs text-slate-400 mb-6">Essential bookkeeping for solo shopkeepers.</p>
+            
+            <ul class="text-xs text-slate-300 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <span>50 Transactions / month</span></li>
+              <li class="flex items-center gap-2">✓ <span>Manual Ledger & Bookkeeping</span></li>
+              <li class="flex items-center gap-2">✓ <span>Basic Profit & Loss report</span></li>
+              <li class="flex items-center gap-2">✓ <span>Offline-first local sync</span></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3 rounded-xl text-xs font-bold text-slate-200 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+            Get Started Free
+          </a>
+        </div>
+
+        <!-- PRO GROWTH (FEATURED) -->
+        <div class="glass-panel p-8 rounded-3xl border-2 border-brandEmerald relative flex flex-col justify-between glow-emerald transform md:-translate-y-2">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-brandEmerald text-black font-extrabold text-[10px] uppercase tracking-wider">
+            Most Popular for Shops
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white">Pro Growth</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-brandEmerald/20 text-brandEmerald">30-Day Free</span>
+            </div>
+            <p class="text-3xl font-black text-brandEmerald mb-2">GHS 89 <span class="text-xs font-normal text-slate-400">/ month</span></p>
+            <p class="text-xs text-slate-400 mb-6">Automate your store with Vision AI OCR and WhatsApp invoicing.</p>
+            
+            <ul class="text-xs text-slate-200 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <strong>Unlimited Transactions & Revenue</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>AI Vision Receipt Scanning (OCR)</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>MoMo SMS Auto-Extraction</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>WhatsApp & PDF Invoicing with MoMo</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>Master Owner PIN Protection</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>Safe-to-Spend Runway Radar</strong></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/20 transition">
+            Start 30-Day Free Trial
+          </a>
+        </div>
+
+        <!-- BUSINESS / CPA -->
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-white">Business / CPA</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300">Multi-User</span>
+            </div>
+            <p class="text-3xl font-black text-white mb-2">GHS 249 <span class="text-xs font-normal text-slate-400">/ month</span></p>
+            <p class="text-xs text-slate-400 mb-6">For businesses with multiple cashiers, branches, or external accountants.</p>
+            
+            <ul class="text-xs text-slate-300 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <span>Everything in Pro Growth</span></li>
+              <li class="flex items-center gap-2">✓ <strong>Unlimited Cashiers & Team Accounts</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>CPA Audit & Trial Balance Hub</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>GRA VAT & Flat Rate Filing Export</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>Multi-branch stock & sales sync</strong></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3 rounded-xl text-xs font-bold text-slate-200 bg-white/5 hover:bg-white/10 border border-white/10 transition">
+            Choose Business Plan
+          </a>
+        </div>
+
+      </div>
+
     </div>
-    <div>© 2026 AMS. Built for small businesses who'd rather be running their business.</div>
-  </div>
-</footer>
+  </section>
 
-<script>
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* Scroll reveal */
-  if ('IntersectionObserver' in window) {
-    var els = document.querySelectorAll('.reveal');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    els.forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-  }
+  <!-- ======================================================== -->
+  <!-- DOWNLOADS SECTION                                        -->
+  <!-- ======================================================== -->
+  <section id="downloads" class="py-24 bg-gradient-to-b from-black via-brandSurface/60 to-black border-t border-white/10 text-center relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="w-16 h-16 rounded-3xl bg-white flex items-center justify-center font-black text-black text-2xl mx-auto mb-6 shadow-2xl">
+        AMS
+      </div>
 
-  /* Theme toggle */
-  var toggle = document.getElementById('theme-toggle');
-  toggle.addEventListener('click', function () {
-    var current = document.documentElement.getAttribute('data-theme');
-    var next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    toggle.setAttribute('aria-pressed', String(next === 'dark'));
-    localStorage.setItem('ams-theme', next);
-  });
-  toggle.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
+      <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4">
+        Download AMS & Start Today.
+      </h2>
+      
+      <p class="text-slate-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto">
+        Install the standalone Android app or launch the web companion directly from your browser.
+      </p>
 
-  /* Magnetic buttons */
-  if (!reduceMotion && canHover) {
-    document.querySelectorAll('.magnetic').forEach(function (btn) {
-      var strength = 14;
-      btn.addEventListener('mousemove', function (e) {
-        var rect = btn.getBoundingClientRect();
-        var relX = (e.clientX - rect.left) / rect.width - 0.5;
-        var relY = (e.clientY - rect.top) / rect.height - 0.5;
-        btn.style.transform = 'translate(' + (relX * strength) + 'px, ' + (relY * strength) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () {
-        btn.style.transform = '';
-      });
-    });
-  }
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        
+        <!-- Android Download -->
+        <a href="https://expo.dev/accounts/ams-accounting-made-simple/projects/leoderksen/builds/b979eb2a-2857-45a3-be21-78c3b79b4eec" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-xl shadow-brandEmerald/20 transition transform hover:scale-105">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993s-.4482.9997-.9993.9997m11.4045-6.02l1.996-3.4572c.156-.2702.0634-.6153-.2068-.7713-.269-.156-.6142-.0634-.7702.2068l-2.0234 3.5046c-1.4646-.6692-3.097-1.0478-4.8771-1.0478s-3.4125.3786-4.8771 1.0478L5.1035 5.3001c-.156-.2702-.5012-.3628-.7702-.2068-.2702.156-.3628.5011-.2068.7713l1.996 3.4572C2.658 11.2334.3418 14.8693 0 19.1672h24c-.3418-4.2979-2.658-7.9338-6.1185-9.8458"/></svg>
+          <span>Download Android APK (Direct)</span>
+        </a>
 
-  /* Spotlight-border capability cards */
-  if (!reduceMotion && canHover) {
-    document.querySelectorAll('.cap-card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var rect = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-      });
-    });
-  }
+        <!-- Web Companion -->
+        <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-white bg-white/10 hover:bg-white/15 border border-white/15 transition transform hover:scale-105">
+          <span>Open Web Workstation 💻</span>
+        </a>
 
-  /* Hero parallax tilt */
-  var heroVisual = document.getElementById('hero-visual');
-  if (!reduceMotion && canHover && heroVisual) {
-    document.querySelector('.hero').addEventListener('mousemove', function (e) {
-      var rect = heroVisual.getBoundingClientRect();
-      var cx = rect.left + rect.width / 2;
-      var cy = rect.top + rect.height / 2;
-      var dx = (e.clientX - cx) / rect.width;
-      var dy = (e.clientY - cy) / rect.height;
-      heroVisual.style.transform = 'rotateX(' + (dy * -6) + 'deg) rotateY(' + (dx * 6) + 'deg)';
-    });
-    document.querySelector('.hero').addEventListener('mouseleave', function () {
-      heroVisual.style.transform = '';
-    });
-  }
+      </div>
 
-  /* Count-up numbers when in view */
-  if (!reduceMotion) {
-    var counters = document.querySelectorAll('[data-count-to]');
-    var counterIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var target = parseInt(el.getAttribute('data-count-to'), 10);
-        var prefix = el.getAttribute('data-prefix') || '';
-        var start = null;
-        var duration = 1100;
-        function step(ts) {
-          if (!start) start = ts;
-          var progress = Math.min((ts - start) / duration, 1);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          var value = Math.round(eased * target);
-          el.textContent = prefix + value.toLocaleString('en-US');
-          if (progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-        counterIO.unobserve(el);
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(function (el) { counterIO.observe(el); });
-  } else {
-    document.querySelectorAll('[data-count-to]').forEach(function (el) {
-      var prefix = el.getAttribute('data-prefix') || '';
-      el.textContent = prefix + parseInt(el.getAttribute('data-count-to'), 10).toLocaleString('en-US');
-    });
-  }
-</script>
+      <!-- iPhone instructions callout -->
+      <div class="mt-8 p-4 rounded-2xl glass-panel text-left max-w-xl mx-auto text-xs text-slate-300 flex items-start gap-3">
+        <span class="text-base">🍎</span>
+        <div>
+          <strong class="text-white">Using an iPhone?</strong> Open <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="text-brandEmerald underline font-bold">https://ams-qlptadw2j-fms11.vercel.app</a> in Safari, tap the <strong>Share button (⎋)</strong>, and tap <strong>"Add to Home Screen"</strong> to run AMS as a full-screen standalone app!
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- FOOTER                                                   -->
+  <!-- ======================================================== -->
+  <footer class="py-12 bg-black border-t border-white/10 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded-md bg-white flex items-center justify-center font-black text-black text-[10px]">
+          AMS
+        </div>
+        <span class="text-slate-400 font-bold">AMS — Accounting Made Simple</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://ams-qlptadw2j-fms11.vercel.app/terms" target="_blank" class="hover:text-slate-300 transition">Terms of Service</a>
+        <a href="https://ams-qlptadw2j-fms11.vercel.app/privacy" target="_blank" class="hover:text-slate-300 transition">Privacy Policy</a>
+        <a href="https://ams-qlptadw2j-fms11.vercel.app" target="_blank" class="hover:text-slate-300 transition">Companion Web</a>
+      </div>
+
+      <p>© 2026 AMS. All rights reserved.</p>
+
+    </div>
+  </footer>
 
 </body>
 </html>
